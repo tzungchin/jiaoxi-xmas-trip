@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>🎄 礁溪聖誕情侶小旅行 2026</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti for Christmas Egg -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        xmasRed: {
+                            DEFAULT: '#C42847',
+                            dark: '#93122A',
+                            light: '#E65975'
+                        },
+                        xmasGreen: {
+                            DEFAULT: '#1E4D3B',
+                            dark: '#113326',
+                            light: '#2E6D54'
+                        },
+                        xmasGold: {
+                            DEFAULT: '#E5A93C',
+                            dark: '#B8801C',
+                            light: '#F8C868'
+                        },
+                        warmBg: '#FAF7F2'
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', '"Plus Jakarta Sans"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for iOS feeling and smooth visuals */
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #FAF7F2;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Glassmorphism effects */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .glass-dark {
+            background: rgba(30, 77, 59, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Hide scrollbars for clean UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Canvas for Snowfall */
+        #snow-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 40;
+        }
+
+        /* Custom Scroll Animation */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(229, 169, 60, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(229, 169, 60, 0.8); }
+        }
+
+        .gold-glow {
+            animation: pulseGlow 3s infinite;
+        }
+
+        /* Checkbox custom style */
+        .custom-checkbox:checked + div {
+            background-color: #1E4D3B;
+            border-color: #1E4D3B;
+        }
+        .custom-checkbox:checked + div i {
+            display: block;
+        }
+    </style>
+</head>
+<body class="text-slate-800 pb-28 max-w-md mx-auto min-h-screen relative shadow-2xl border-x border-slate-200">
+
+    <canvas id="snow-canvas"></canvas>
+
+    <!-- Header / Top Bar -->
+    <header class="sticky top-0 z-30 glass-card px-4 py-3 flex justify-between items-center border-b border-rose-100 shadow-sm">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-xmasRed text-white flex items-center justify-center text-sm shadow-md">
+                🎄
+            </div>
+            <div>
+                <h1 class="text-xs font-bold text-xmasGreen tracking-wide">2026/12/25–12/26</h1>
+                <p class="text-base font-extrabold text-xmasRed leading-tight">礁溪聖誕情侶小旅行 ❤️</p>
+            </div>
+        </div>
+        <button id="snowToggleBtn" onclick="toggleSnow()" class="w-9 h-9 rounded-full bg-slate-100 text-xmasGreen flex items-center justify-center hover:bg-rose-50 transition active:scale-95 shadow-inner" title="切換降雪">
+            <i class="fa-solid fa-snowflake text-base"></i>
+        </button>
+    </header>
+
+    <!-- Main Content Containers -->
+    <main class="p-4 space-y-5">
+
+        <!-- ================= PAGE 1: HOME ================= -->
+        <section id="page-home" class="page-content space-y-4">
+
+            <!-- Banner Hero Card -->
+            <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-xmasGreen via-xmasGreen-dark to-slate-900 text-white p-5 shadow-xl border border-xmasGreen-light/30">
+                <div class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-xmasGold/20 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="relative z-10">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-xmasGold/20 text-xmasGold border border-xmasGold/30">
+                            <i class="fa-solid fa-heart text-xmasRed text-xs"></i> 2 Days 1 Night
+                        </span>
+                        <span class="text-xs font-medium text-emerald-200 bg-white/10 px-2.5 py-1 rounded-lg backdrop-blur-md">
+                            📍 七堵 ➔ 礁溪
+                        </span>
+                    </div>
+
+                    <h2 class="text-2xl font-black text-amber-100 tracking-tight mb-1">
+                        礁溪溫泉聖誕約會
+                    </h2>
+                    <p class="text-xs text-emerald-100/90 leading-relaxed mb-4">
+                        泡湯、美食、星空與專屬於我們的雙人聖誕回憶 温泉旅行 ✨
+                    </p>
+
+                    <!-- Countdown Timer Block -->
+                    <div class="bg-black/30 rounded-2xl p-3 border border-white/10 backdrop-blur-sm">
+                        <div class="text-[10px] text-amber-200/80 font-bold uppercase tracking-widest text-center mb-1.5">
+                            ⏰ 距離 2026 聖誕出發倒數
+                        </div>
+                        <div class="grid grid-cols-4 gap-1.5 text-center">
+                            <div class="bg-white/10 rounded-xl py-1.5 px-1">
+                                <span id="cd-days" class="block text-lg font-black text-amber-300">00</span>
+                                <span class="text-[9px] text-emerald-100">天</span>
+                            </div>
+                            <div class="bg-white/10 rounded-xl py-1.5 px-1">
+                                <span id="cd-hours" class="block text-lg font-black text-amber-300">00</span>
+                                <span class="text-[9px] text-emerald-100">時</span>
+                            </div>
+                            <div class="bg-white/10 rounded-xl py-1.5 px-1">
+                                <span id="cd-mins" class="block text-lg font-black text-amber-300">00</span>
+                                <span class="text-[9px] text-emerald-100">分</span>
+                            </div>
+                            <div class="bg-white/10 rounded-xl py-1.5 px-1">
+                                <span id="cd-secs" class="block text-lg font-black text-amber-300">00</span>
+                                <span class="text-[9px] text-emerald-100">秒</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Romantic Greeting Card -->
+            <div class="glass-card rounded-2xl p-4 shadow-sm border border-rose-100 flex items-center gap-3.5 relative overflow-hidden">
+                <div class="w-12 h-12 rounded-2xl bg-rose-100 text-xmasRed flex items-center justify-center text-xl shrink-0">
+                    🎁
+                </div>
+                <div class="flex-1">
+                    <p class="text-xs font-bold text-xmasRed">聖誕浪漫絮語</p>
+                    <p class="text-sm font-extrabold text-slate-800 tracking-tight">「今年的聖誕節，我們一起去礁溪 ❤️」</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">預訂飯店：「東旅湯宿京閣苑」溫泉客房</p>
+                </div>
+            </div>
+
+            <!-- Trip Progress Tracker -->
+            <div class="glass-card rounded-2xl p-4 shadow-sm space-y-3">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-xmasGreen"></i> 行程進度觀測
+                    </h3>
+                    <span id="progress-percent" class="text-xs font-bold text-xmasRed bg-rose-50 px-2 py-0.5 rounded-md">0%</span>
+                </div>
+                <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="bg-gradient-to-r from-xmasGreen to-xmasGold h-full w-0 transition-all duration-500 rounded-full"></div>
+                </div>
+                <div id="progress-text" class="text-xs text-slate-500 flex justify-between">
+                    <span>已完成 0 / 11 個行程點</span>
+                    <span class="text-xmasGreen font-medium">加油！準備出發囉 🚆</span>
+                </div>
+            </div>
+
+            <!-- Today / Quick Overview Highlights -->
+            <div class="space-y-2">
+                <h3 class="text-sm font-bold text-slate-700 px-1 flex items-center gap-1.5">
+                    <i class="fa-solid fa-star text-xmasGold"></i> 行程亮點速覽
+                </h3>
+                <div class="grid grid-cols-2 gap-2.5">
+                    <div class="glass-card p-3 rounded-xl border border-amber-100/60 shadow-sm flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-base shrink-0">♨️</div>
+                        <div class="overflow-hidden">
+                            <p class="text-xs font-bold text-slate-800 truncate">東旅湯宿雙人湯屋</p>
+                            <p class="text-[10px] text-slate-500 truncate">日系質感泡湯放鬆</p>
+                        </div>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-rose-100/60 shadow-sm flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-lg bg-rose-50 text-xmasRed flex items-center justify-center text-base shrink-0">🎄</div>
+                        <div class="overflow-hidden">
+                            <p class="text-xs font-bold text-slate-800 truncate">浪漫聖誕大餐</p>
+                            <p class="text-[10px] text-slate-500 truncate">礁溪特選主題晚餐</p>
+                        </div>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-emerald-100/60 shadow-sm flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-lg bg-emerald-50 text-xmasGreen flex items-center justify-center text-base shrink-0">🌿</div>
+                        <div class="overflow-hidden">
+                            <p class="text-xs font-bold text-slate-800 truncate">林美石磐步道</p>
+                            <p class="text-[10px] text-slate-500 truncate">吸收森林芬多精</p>
+                        </div>
+                    </div>
+                    <div class="glass-card p-3 rounded-xl border border-indigo-100/60 shadow-sm flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-base shrink-0">✨</div>
+                        <div class="overflow-hidden">
+                            <p class="text-xs font-bold text-slate-800 truncate">湯圍溝燈飾夜遊</p>
+                            <p class="text-[10px] text-slate-500 truncate">夜間溫泉浪漫散策</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Action Shortcut -->
+            <button onclick="switchTab('itinerary')" class="w-full py-3 bg-gradient-to-r from-xmasGreen to-xmasGreen-light text-white rounded-xl font-bold text-sm shadow-md hover:opacity-95 transition active:scale-[0.98] flex items-center justify-center gap-2">
+                <i class="fa-solid fa-calendar-day"></i> 查看兩天完整時間軸行程
+            </button>
+        </section>
+
+        <!-- ================= PAGE 2: ITINERARY ================= -->
+        <section id="page-itinerary" class="page-content hidden space-y-4">
+            
+            <!-- Day Toggle Switch -->
+            <div class="flex bg-slate-200/80 p-1 rounded-2xl shadow-inner text-sm font-bold">
+                <button id="day1-btn" onclick="switchDay(1)" class="flex-1 py-2 rounded-xl bg-white text-xmasGreen shadow-md transition-all text-center flex items-center justify-center gap-1.5">
+                    <span>🎄 Day 1</span>
+                    <span class="text-[11px] font-normal text-slate-500">(12/25 聖誕節)</span>
+                </button>
+                <button id="day2-btn" onclick="switchDay(2)" class="flex-1 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all text-center flex items-center justify-center gap-1.5">
+                    <span>🎁 Day 2</span>
+                    <span class="text-[11px] font-normal text-slate-500">(12/26 禮物日)</span>
+                </button>
+            </div>
+
+            <!-- Day 1 Content Timeline -->
+            <div id="day1-timeline" class="space-y-3 relative pl-6 border-l-2 border-xmasGreen/30 ml-2">
+                <!-- Timeline Items generated by JS or static with IDs for check states -->
+            </div>
+
+            <!-- Day 2 Content Timeline -->
+            <div id="day2-timeline" class="space-y-3 relative pl-6 border-l-2 border-xmasGold/40 ml-2 hidden">
+                <!-- Timeline Items generated by JS -->
+            </div>
+
+        </section>
+
+        <!-- ================= PAGE 3: SPOTS & DINING ================= -->
+        <section id="page-spots" class="page-content hidden space-y-4">
+
+            <!-- Category Filter Tabs -->
+            <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+                <button onclick="filterSpots('all')" class="spot-tab-btn active border border-xmasGreen bg-xmasGreen text-white px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shadow-sm">全部景點美食</button>
+                <button onclick="filterSpots('spot')" class="spot-tab-btn border border-slate-200 bg-white text-slate-700 px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap">🌿 自然與景點</button>
+                <button onclick="filterSpots('food')" class="spot-tab-btn border border-slate-200 bg-white text-slate-700 px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap">🍜 特色美食餐廳</button>
+                <button onclick="filterSpots('stay')" class="spot-tab-btn border border-slate-200 bg-white text-slate-700 px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap">🏨 飯店住宿</button>
+            </div>
+
+            <!-- Spot Cards Grid -->
+            <div id="spots-container" class="space-y-3">
+                <!-- Dynamically populated from JS -->
+            </div>
+        </section>
+
+        <!-- ================= PAGE 4: BUDGET TRACKER ================= -->
+        <section id="page-budget" class="page-content hidden space-y-4">
+
+            <!-- Expense Summary Card -->
+            <div class="bg-gradient-to-br from-xmasGreen-dark to-xmasGreen text-white rounded-2xl p-4 shadow-lg relative overflow-hidden">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-xs font-medium text-amber-200 bg-white/10 px-2.5 py-1 rounded-full">💰 旅費分攤試算</span>
+                    <button onclick="resetExpenses()" class="text-[11px] text-rose-200 hover:text-white underline">重置所有費用</button>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mt-2">
+                    <div class="bg-white/10 p-3 rounded-xl border border-white/10">
+                        <p class="text-[11px] text-emerald-200">累積總花費</p>
+                        <p class="text-xl font-black text-amber-300">NT$ <span id="total-expense">0</span></p>
+                    </div>
+                    <div class="bg-white/10 p-3 rounded-xl border border-white/10">
+                        <p class="text-[11px] text-emerald-200">每人均分費用</p>
+                        <p class="text-xl font-black text-white">NT$ <span id="per-person-expense">0</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Expense Form -->
+            <div class="glass-card p-4 rounded-2xl shadow-sm space-y-3">
+                <h3 class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                    <i class="fa-solid fa-plus-circle text-xmasRed"></i> 新增消費項目
+                </h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="exp-name" placeholder="項目 (例: 火車票)" class="text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-xmasGreen">
+                    <input type="number" id="exp-amount" placeholder="金額 NT$" class="text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-xmasGreen">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <select id="exp-category" class="text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-xmasGreen">
+                        <option value="火車">🚆 火車/交通</option>
+                        <option value="租車">🚗 租車</option>
+                        <option value="住宿">🏨 住宿</option>
+                        <option value="餐費">🍽️ 餐費</option>
+                        <option value="景點">🌿 景點/門票</option>
+                        <option value="購物">🎁 購物/伴手禮</option>
+                    </select>
+                    <select id="exp-payer" class="text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-xmasGreen">
+                        <option value="Shared">🤝 共同支付 (均分)</option>
+                        <option value="Person A">👤 男方先行支付</option>
+                        <option value="Person B">👩 女方先行支付</option>
+                    </select>
+                </div>
+                <button onclick="addExpense()" class="w-full py-2.5 bg-xmasRed hover:bg-xmasRed-dark text-white text-xs font-bold rounded-xl transition active:scale-[0.98] shadow-sm">
+                    新增此筆紀錄
+                </button>
+            </div>
+
+            <!-- Expense List -->
+            <div class="glass-card p-4 rounded-2xl shadow-sm space-y-2">
+                <h3 class="text-xs font-bold text-slate-700 flex justify-between items-center">
+                    <span>📋 消費明細清單</span>
+                    <span class="text-[10px] text-slate-400 font-normal">點擊刪除鍵可移除紀錄</span>
+                </h3>
+                <div id="expense-list" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+                    <!-- Dynamic Items -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 5: CHRISTMAS EGG ================= -->
+        <section id="page-surprise" class="page-content hidden space-y-4">
+            
+            <div class="glass-dark rounded-3xl p-6 text-white text-center space-y-4 shadow-2xl relative overflow-hidden border border-amber-300/30">
+                <div class="text-5xl animate-bounce">🎄</div>
+                <div>
+                    <h2 class="text-2xl font-black text-amber-300 mb-1">Merry Christmas! ❤️</h2>
+                    <p class="text-xs text-emerald-100/90">2026 礁溪聖誕浪漫之旅</p>
+                </div>
+
+                <div class="bg-white/10 p-4 rounded-2xl border border-white/10 text-left space-y-2 text-xs leading-relaxed">
+                    <p class="text-amber-200 font-bold">✨ 給我們的聖誕旅行留言：</p>
+                    <textarea id="couple-note" rows="4" placeholder="在此寫下對這趟旅行的期待或給對方的祝福真心話..." 
+                        class="w-full bg-black/20 text-white placeholder-slate-400 p-3 rounded-xl border border-white/10 focus:outline-none text-xs focus:ring-1 focus:ring-amber-300"></textarea>
+                    <button onclick="saveCoupleNote()" class="w-full py-2 bg-xmasGold text-slate-900 font-bold rounded-lg text-xs hover:bg-amber-300 transition">
+                        💾 儲存愛的宣言
+                    </button>
+                </div>
+
+                <div class="pt-2">
+                    <button onclick="triggerConfetti()" class="px-6 py-3 bg-gradient-to-r from-xmasRed to-rose-500 text-white font-extrabold rounded-full shadow-lg hover:brightness-110 active:scale-95 transition text-xs gold-glow">
+                        🎉 點擊發射聖誕愛心彩帶！
+                    </button>
+                </div>
+            </div>
+
+            <!-- Memory Moments Photo Placeholder Card -->
+            <div class="glass-card p-4 rounded-2xl space-y-2">
+                <h3 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                    <i class="fa-solid fa-camera text-xmasRed"></i> 礁溪回憶留影備忘
+                </h3>
+                <p class="text-[11px] text-slate-500">別忘了捕捉這些浪漫時刻：</p>
+                <ul class="text-xs text-slate-700 space-y-1.5 list-disc list-inside">
+                    <li>湯圍溝公園聖誕燈飾下的雙人合照 📷</li>
+                    <li>東旅湯宿客房內的暖心溫泉時刻 ♨️</li>
+                    <li>景觀餐廳眺望宜蘭夜景/海景的乾杯時刻 🥂</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar (iOS / Mobile style) -->
+    <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/90 backdrop-blur-md border-t border-slate-200/80 py-2 px-3 z-30 flex justify-between items-center shadow-lg">
+        <button onclick="switchTab('home')" id="nav-home" class="nav-btn flex-1 flex flex-col items-center gap-0.5 text-xmasGreen">
+            <i class="fa-solid fa-house-chimney text-base"></i>
+            <span class="text-[10px] font-bold">首頁</span>
+        </button>
+        <button onclick="switchTab('itinerary')" id="nav-itinerary" class="nav-btn flex-1 flex flex-col items-center gap-0.5 text-slate-400">
+            <i class="fa-solid fa-calendar-day text-base"></i>
+            <span class="text-[10px] font-bold">行程</span>
+        </button>
+        <button onclick="switchTab('spots')" id="nav-spots" class="nav-btn flex-1 flex flex-col items-center gap-0.5 text-slate-400">
+            <i class="fa-solid fa-location-dot text-base"></i>
+            <span class="text-[10px] font-bold">景點</span>
+        </button>
+        <button onclick="switchTab('budget')" id="nav-budget" class="nav-btn flex-1 flex flex-col items-center gap-0.5 text-slate-400">
+            <i class="fa-solid fa-wallet text-base"></i>
+            <span class="text-[10px] font-bold">記帳</span>
+        </button>
+        <button onclick="switchTab('surprise')" id="nav-surprise" class="nav-btn flex-1 flex flex-col items-center gap-0.5 text-slate-400">
+            <i class="fa-solid fa-gift text-base"></i>
+            <span class="text-[10px] font-bold">彩蛋</span>
+        </button>
+    </nav>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-16 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-4 py-2 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50">
+        已更新
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Timeline Data
+        const itineraryData = {
+            day1: [
+                { id: 'd1_1', time: '09:53', title: '七堵車站出發', desc: '搭乘台鐵區間快車前往礁溪', icon: '🚆', tag: '交通' },
+                { id: 'd1_2', time: '10:42', title: '抵達礁溪車站', desc: '走出車站感受溫泉鄉漫步氣息', icon: '📍', tag: '抵達' },
+                { id: 'd1_3', time: '10:45', title: '租借機車/汽車', desc: '取車方便後續行程彈性走訪', icon: '🚗', tag: '交通' },
+                { id: 'd1_4', time: '11:20', title: '午餐：礁溪特色美食', desc: '品嚐柯氏蔥油餅 / 樂山溫泉拉麵', icon: '🍜', tag: '美食' },
+                { id: 'd1_5', time: '13:00', title: '林美石磐步道 / 五峰旗瀑布', desc: '漫步綠意瀑布步道，吸收芬多精', icon: '🌿', tag: '景點' },
+                { id: 'd1_6', time: '15:00', title: '下午茶咖啡漫步', desc: '前往瑪德琳 Cafe 或定邦咖啡享用甜點', icon: '☕', tag: '咖啡' },
+                { id: 'd1_7', time: '16:00', title: '入住「東旅湯宿京閣苑」', desc: '辦理 Check-in，感受日式雅緻氛圍', icon: '🏨', tag: '住宿' },
+                { id: 'd1_8', time: '16:30', title: '客房雙人泡湯放鬆', desc: '享受房間獨立溫泉池洗滌疲憊', icon: '♨️', tag: '泡湯' },
+                { id: 'd1_9', time: '18:00', title: '浪漫聖誕大餐', desc: '享用精心準備的礁溪聖誕晚宴', icon: '🎄', tag: '大餐' },
+                { id: 'd1_10', time: '20:00', title: '礁溪溫泉公園夜遊', desc: '手牽手賞聖誕燈飾與夜間足湯', icon: '🌙', tag: '夜遊' },
+                { id: 'd1_11', time: '21:00', title: '回飯店享用聖誕甜點', desc: '返回東旅湯宿，享受靜謐深夜時光', icon: '❤️', tag: '休息' }
+            ],
+            day2: [
+                { id: 'd2_1', time: '08:30', title: '飯店美味早餐', desc: '享用日式/西式精緻晨間自助餐', icon: '🍳', tag: '早餐' },
+                { id: 'd2_2', time: '10:00', title: '採買礁溪伴手禮', desc: '購買奕順軒奶凍捲、蔥澡文創周邊', icon: '🛍️', tag: '購物' },
+                { id: 'd2_3', time: '11:30', title: '景觀餐廳午餐', desc: '走訪空吧農場或滿山望海眺望美景', icon: '🍽️', tag: '美食' },
+                { id: 'd2_4', time: '14:00', title: '湯圍溝公園 / 地熱足湯散策', desc: '溫泉小鎮溫馨散步與免費足湯', icon: '♨️', tag: '散策' },
+                { id: 'd2_5', time: '16:00', title: '還車 & 前往車站', desc: '整理行李還車，準備搭車', icon: '🚗', tag: '交通' },
+                { id: 'd2_6', time: '16:30', title: '搭車返回七堵', desc: '帶著滿滿聖誕甜蜜回憶平安賦歸', icon: '🚆', tag: '歸途' }
+            ]
+        };
+
+        // Spots & Dining Guide Data
+        const spotsData = [
+            {
+                name: '東旅湯宿京閣苑',
+                type: 'stay',
+                typeName: '🏨 飯店住宿',
+                duration: '入住 16:00',
+                address: '宜蘭縣礁溪鄉德陽路28號',
+                note: '日式和風溫泉飯店，客房內即有獨立雙人湯池。',
+                phone: '03-988-8839',
+                mapQuery: '東旅湯宿京閣苑'
+            },
+            {
+                name: '林美石磐步道',
+                type: 'spot',
+                typeName: '🌿 自然景點',
+                duration: '預計 2 小時',
+                address: '宜蘭縣礁溪鄉林尾路',
+                note: '宜蘭小太魯閣之稱，低海拔溪谷步道，環境幽靜。',
+                mapQuery: '林美石磐步道'
+            },
+            {
+                name: '五峰旗瀑布',
+                type: 'spot',
+                typeName: '🌿 自然景點',
+                duration: '預計 1.5 小時',
+                address: '宜蘭縣礁溪鄉五峰路',
+                note: '三層瀑布景緻壯觀，沿途空氣清新順暢。',
+                mapQuery: '五峰旗瀑布'
+            },
+            {
+                name: '樂山溫泉拉麵 (二店)',
+                type: 'food',
+                typeName: '🍜 特色美食',
+                duration: '預計 1 小時',
+                address: '宜蘭縣礁溪鄉和平路20號',
+                note: '招牌邊泡腳邊吃拉麵的獨特體驗！',
+                phone: '03-988-8637',
+                mapQuery: '樂山溫泉拉麵'
+            },
+            {
+                name: '柯氏蔥油餅',
+                type: 'food',
+                typeName: '🥟 地道小吃',
+                duration: '預計 20 分鐘',
+                address: '宜蘭縣礁溪鄉礁溪路四段128號',
+                note: '礁溪超人氣排隊名店，酥脆蔥香十足。',
+                mapQuery: '柯氏蔥油餅'
+            },
+            {
+                name: '瑪德琳 Cafe',
+                type: 'food',
+                typeName: '☕ 咖啡下午茶',
+                duration: '預計 1.5 小時',
+                address: '宜蘭縣礁溪鄉玉田村茅埔路17號',
+                note: '歐陸浪漫風格咖啡館，精緻甜點與優雅氛圍。',
+                phone: '03-988-3174',
+                mapQuery: '瑪德琳 Cafe'
+            },
+            {
+                name: '奕順軒 (礁溪店)',
+                type: 'food',
+                typeName: '🎁 伴手禮名店',
+                duration: '預計 30 分鐘',
+                address: '宜蘭縣礁溪鄉礁溪路五段96號',
+                note: '必買鮮奶凍捲與宜蘭餅，聖誕送禮好選擇。',
+                phone: '03-988-7911',
+                mapQuery: '奕順軒 礁溪店'
+            }
+        ];
+
+        // State Management
+        let completedTasks = JSON.parse(localStorage.getItem('jiaoxi_tasks')) || {};
+        let expenses = JSON.parse(localStorage.getItem('jiaoxi_expenses')) || [
+            { id: 1, name: '七堵-礁溪台鐵來回票', amount: 300, category: '火車', payer: 'Shared' },
+            { id: 2, name: '機車租借 2 天', amount: 800, category: '租車', payer: 'Person A' },
+            { id: 3, name: '東旅湯宿雙人房', amount: 3800, category: '住宿', payer: 'Shared' }
+        ];
+
+        window.onload = function() {
+            initSnow();
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            renderTimelines();
+            renderSpots('all');
+            renderExpenses();
+            updateProgress();
+
+            // Load saved note
+            const savedNote = localStorage.getItem('jiaoxi_couple_note');
+            if (savedNote) {
+                document.getElementById('couple-note').value = savedNote;
+            }
+        };
+
+        // Navigation Tabs Switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`page-${tabName}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-xmasGreen');
+                btn.classList.add('text-slate-400');
+            });
+
+            const activeBtn = document.getElementById(`nav-${tabName}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-400');
+                activeBtn.classList.add('text-xmasGreen');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Countdown Calculator to Dec 25, 2026
+        function updateCountdown() {
+            const targetDate = new Date('2026-12-25T09:53:00').getTime();
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                document.getElementById('cd-days').innerText = '00';
+                document.getElementById('cd-hours').innerText = '00';
+                document.getElementById('cd-mins').innerText = '00';
+                document.getElementById('cd-secs').innerText = '00';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('cd-days').innerText = String(days).padStart(2, '0');
+            document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('cd-mins').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('cd-secs').innerText = String(seconds).padStart(2, '0');
+        }
+
+        function switchDay(dayNum) {
+            const d1Btn = document.getElementById('day1-btn');
+            const d2Btn = document.getElementById('day2-btn');
+            const d1Tl = document.getElementById('day1-timeline');
+            const d2Tl = document.getElementById('day2-timeline');
+
+            if (dayNum === 1) {
+                d1Btn.className = "flex-1 py-2 rounded-xl bg-white text-xmasGreen shadow-md transition-all text-center flex items-center justify-center gap-1.5";
+                d2Btn.className = "flex-1 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all text-center flex items-center justify-center gap-1.5";
+                d1Tl.classList.remove('hidden');
+                d2Tl.classList.add('hidden');
+            } else {
+                d2Btn.className = "flex-1 py-2 rounded-xl bg-white text-xmasGreen shadow-md transition-all text-center flex items-center justify-center gap-1.5";
+                d1Btn.className = "flex-1 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all text-center flex items-center justify-center gap-1.5";
+                d2Tl.classList.remove('hidden');
+                d1Tl.classList.add('hidden');
+            }
+        }
+
+        function renderTimelines() {
+            renderDayTimeline('day1', itineraryData.day1, 'day1-timeline');
+            renderDayTimeline('day2', itineraryData.day2, 'day2-timeline');
+        }
+
+        function renderDayTimeline(dayKey, items, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            items.forEach(item => {
+                const isChecked = !!completedTasks[item.id];
+                const cardHtml = `
+                    <div class="relative group">
+                        <!-- Dot Indicator -->
+                        <div class="absolute -left-[31px] top-3.5 w-4 h-4 rounded-full border-2 border-white bg-xmasGreen shadow"></div>
+
+                        <div class="glass-card p-3.5 rounded-2xl shadow-sm transition-all ${isChecked ? 'opacity-60 bg-slate-100/80' : ''}">
+                            <div class="flex items-start justify-between gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xl">${item.icon}</span>
+                                    <div>
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="text-xs font-black text-xmasRed">${item.time}</span>
+                                            <span class="text-[10px] bg-emerald-50 text-xmasGreen border border-emerald-200 px-1.5 py-0.2 rounded font-medium">${item.tag}</span>
+                                        </div>
+                                        <h4 class="text-sm font-bold text-slate-800 ${isChecked ? 'line-through text-slate-500' : ''}">${item.title}</h4>
+                                    </div>
+                                </div>
+
+                                <!-- Custom Checkbox -->
+                                <label class="cursor-pointer flex items-center p-1">
+                                    <input type="checkbox" onchange="toggleTask('${item.id}')" ${isChecked ? 'checked' : ''} class="hidden custom-checkbox">
+                                    <div class="w-5 h-5 border-2 border-slate-300 rounded-lg flex items-center justify-center text-white transition">
+                                        <i class="fa-solid fa-check text-xs hidden"></i>
+                                    </div>
+                                </label>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1 pl-7">${item.desc}</p>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            });
+        }
+
+        function toggleTask(id) {
+            completedTasks[id] = !completedTasks[id];
+            localStorage.setItem('jiaoxi_tasks', JSON.stringify(completedTasks));
+            renderTimelines();
+            updateProgress();
+            showToast(completedTasks[id] ? '已標記為完成 ✅' : '已取消完成狀態');
+        }
+
+        function updateProgress() {
+            const total = itineraryData.day1.length + itineraryData.day2.length;
+            const completedCount = Object.values(completedTasks).filter(Boolean).length;
+            const percent = Math.round((completedCount / total) * 100);
+
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+            document.getElementById('progress-percent').innerText = `${percent}%`;
+            document.getElementById('progress-text').innerHTML = `
+                <span>已完成 ${completedCount} / ${total} 個行程點</span>
+                <span class="text-xmasGreen font-medium">${percent === 100 ? '🎉 行程全部解鎖完畢！' : '持續前進中 ✨'}</span>
+            `;
+        }
+
+        function renderSpots(filter) {
+            const container = document.getElementById('spots-container');
+            container.innerHTML = '';
+
+            const filtered = filter === 'all' ? spotsData : spotsData.filter(s => s.type === filter);
+
+            filtered.forEach(spot => {
+                const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.mapQuery)}`;
+                const phoneBtn = spot.phone ? `
+                    <a href="tel:${spot.phone}" class="px-3 py-1.5 bg-emerald-50 text-xmasGreen rounded-xl text-xs font-bold flex items-center gap-1 hover:bg-emerald-100 border border-emerald-200">
+                        <i class="fa-solid fa-phone text-[10px]"></i> 撥號
+                    </a>
+                ` : '';
+
+                const html = `
+                    <div class="glass-card p-4 rounded-2xl shadow-sm border border-slate-100 space-y-2">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-[10px] font-bold text-xmasGold-dark bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md">${spot.typeName}</span>
+                                <h4 class="text-base font-bold text-slate-800 mt-1">${spot.name}</h4>
+                            </div>
+                            <span class="text-[11px] text-slate-400 font-medium">${spot.duration}</span>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">${spot.note}</p>
+                        <p class="text-[11px] text-slate-400 flex items-center gap-1 truncate">
+                            <i class="fa-solid fa-location-dot"></i> ${spot.address}
+                        </p>
+                        <div class="flex justify-end gap-2 pt-1 border-t border-slate-100">
+                            ${phoneBtn}
+                            <a href="${mapsUrl}" target="_blank" class="px-3.5 py-1.5 bg-xmasRed text-white rounded-xl text-xs font-bold flex items-center gap-1 hover:bg-xmasRed-dark transition shadow-sm">
+                                <i class="fa-solid fa-map-location-dot"></i> Google Maps 導航
+                            </a>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        function filterSpots(category) {
+            document.querySelectorAll('.spot-tab-btn').forEach(btn => {
+                btn.className = "spot-tab-btn border border-slate-200 bg-white text-slate-700 px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap";
+            });
+            event.target.className = "spot-tab-btn active border border-xmasGreen bg-xmasGreen text-white px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shadow-sm";
+            renderSpots(category);
+        }
+
+        function renderExpenses() {
+            const listContainer = document.getElementById('expense-list');
+            listContainer.innerHTML = '';
+
+            let total = 0;
+
+            expenses.forEach(exp => {
+                total += Number(exp.amount);
+                const payerBadge = exp.payer === 'Shared' ? '🤝 均分' : (exp.payer === 'Person A' ? '👤 男方' : '👩 女方');
+                
+                const itemHtml = `
+                    <div class="flex justify-between items-center bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-xs">
+                        <div class="flex items-center gap-2">
+                            <button onclick="deleteExpense(${exp.id})" class="text-slate-300 hover:text-rose-500 p-1">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                            <div>
+                                <p class="font-bold text-slate-800">${exp.name}</p>
+                                <span class="text-[10px] text-slate-400">${exp.category} • ${payerBadge}</span>
+                            </div>
+                        </div>
+                        <span class="font-black text-xmasRed">NT$ ${exp.amount}</span>
+                    </div>
+                `;
+                listContainer.innerHTML += itemHtml;
+            });
+
+            document.getElementById('total-expense').innerText = total.toLocaleString();
+            document.getElementById('per-person-expense').innerText = Math.round(total / 2).toLocaleString();
+            localStorage.setItem('jiaoxi_expenses', JSON.stringify(expenses));
+        }
+
+        function addExpense() {
+            const nameInput = document.getElementById('exp-name');
+            const amountInput = document.getElementById('exp-amount');
+            const categorySelect = document.getElementById('exp-category');
+            const payerSelect = document.getElementById('exp-payer');
+
+            const name = nameInput.value.trim();
+            const amount = parseFloat(amountInput.value);
+
+            if (!name || isNaN(amount) || amount <= 0) {
+                showToast('請輸入有效的項目名稱與金額');
+                return;
+            }
+
+            expenses.push({
+                id: Date.now(),
+                name: name,
+                amount: amount,
+                category: categorySelect.value,
+                payer: payerSelect.value
+            });
+
+            nameInput.value = '';
+            amountInput.value = '';
+            renderExpenses();
+            showToast('已新增消費明細 💰');
+        }
+
+        function deleteExpense(id) {
+            expenses = expenses.filter(e => e.id !== id);
+            renderExpenses();
+            showToast('已刪除筆記紀錄');
+        }
+
+        function resetExpenses() {
+            if (confirm('確定要清除所有費用紀錄嗎？')) {
+                expenses = [];
+                renderExpenses();
+                showToast('費用已重置');
+            }
+        }
+
+        function saveCoupleNote() {
+            const note = document.getElementById('couple-note').value;
+            localStorage.setItem('jiaoxi_couple_note', note);
+            showToast('聖誕真心話已成功儲存 💌');
+        }
+
+        function triggerConfetti() {
+            confetti({
+                particleCount: 80,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#C42847', '#1E4D3B', '#E5A93C', '#ffffff']
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 2000);
+        }
+
+        // Canvas Snowfall Effect
+        let snowActive = true;
+        function initSnow() {
+            const canvas = document.getElementById('snow-canvas');
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const particles = Array.from({ length: 35 }, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                r: Math.random() * 3 + 1,
+                d: Math.random() * 1 + 0.5,
+                opacity: Math.random() * 0.7 + 0.3
+            }));
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+                if (!snowActive) return requestAnimationFrame(draw);
+
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.beginPath();
+                particles.forEach(p => {
+                    ctx.moveTo(p.x, p.y);
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
+                });
+                ctx.fill();
+
+                update();
+                requestAnimationFrame(draw);
+            }
+
+            function update() {
+                particles.forEach(p => {
+                    p.y += p.d;
+                    p.x += Math.sin(p.y * 0.02) * 0.5;
+                    if (p.y > height) {
+                        p.y = -10;
+                        p.x = Math.random() * width;
+                    }
+                });
+            }
+
+            draw();
+        }
+
+        function toggleSnow() {
+            snowActive = !snowActive;
+            const btn = document.getElementById('snowToggleBtn');
+            btn.classList.toggle('text-xmasRed', !snowActive);
+            showToast(snowActive ? '開啟飄雪效果 ❄️' : '已關閉飄雪效果');
+        }
+    </script>
+</body>
+</html>
