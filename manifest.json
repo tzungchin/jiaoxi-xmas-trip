@@ -1,0 +1,9 @@
+{
+  "name": "礁溪聖誕小旅行",
+  "short_name": "礁溪聖誕",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#7b2633",
+  "background_color": "#fff8f1",
+  "lang": "zh-Hant"
+}
