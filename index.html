@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7b2633"><meta name="apple-mobile-web-app-capable" content="yes">
 <title>礁溪聖誕小旅行</title>
 <style>
 :root{--red:#7b2633;--red2:#a44752;--cream:#fff8f1;--card:#fff;--gold:#c89a45;--ink:#302928;--muted:#776d69;--line:#eadfd8}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(#fff7ef,#f7eee9);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:var(--ink)}
-.app{max-width:620px;margin:auto;min-height:100vh;padding-bottom:80px}
+.app{max-width:620px;margin:auto;min-height:100vh;padding-bottom:80px;padding-top:env(safe-area-inset-top,0px)}
 header{padding:28px 20px 24px;color:#fff;background:linear-gradient(145deg,var(--red),var(--red2));border-radius:0 0 28px 28px;box-shadow:0 8px 25px #64263133}
 .small{font-size:12px;letter-spacing:2px;opacity:.8}.title{font-size:29px;font-weight:850;margin:6px 0}.sub{opacity:.9}.pill{display:inline-block;margin-top:13px;padding:8px 12px;border:1px solid #fff5;border-radius:20px;background:#fff1}
 nav{position:sticky;top:0;z-index:5;display:flex;padding:9px 10px;gap:6px;background:#fffaf7dd;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
@@ -38,7 +38,7 @@ h2{margin:0 0 6px;font-size:20px}h3{margin:0;font-size:16px}.muted{color:var(--m
 </section>
 <section id="plan" class="panel"><div class="days"><button class="sel" onclick="day(1,this)">12/25 · Day 1</button><button onclick="day(2,this)">12/26 · Day 2</button></div><div id="timeline"></div></section>
 <section id="places" class="panel"><div class="box"><h2>📍 景點與地點</h2><div class="muted">點「導航」開啟 Google Maps。</div></div><div id="placesList"></div></section>
-<section id="money" class="panel"><div class="box"><h2>💰 旅行花費</h2><div class="grid"><div class="stat">總花費<b id="total">NT$0</b></div><div class="stat">每人約<b id="per">NT$0</b></div></div><div id="expenses"></div><button class="add" onclick="addExp()">＋ 新增一筆</button></div></section>
+<section id="money" class="panel"><div class="box"><h2>💰 旅行花費</h2><div class="grid"><div class="stat">總花費<b id="total">NT$0</b></div><div class="stat">每人約<b id="per">NT$0</b></div></div><div class="muted" id="emptyExp" style="margin-top:8px">還沒有花費，點下方新增（車票、住宿、晚餐…）。</div><div id="expenses"></div><button class="add" onclick="addExp()">＋ 新增一筆</button></div></section>
 <div class="footer">🎁 願這個聖誕節，留下屬於你們的回憶。</div>
 </main></div>
 <script>
@@ -47,14 +47,15 @@ const data={1:[
 2:[
 ["08:30","🥐 早餐","慢慢吃早餐，不趕行程","住宿"],["10:00","🏨 Check-out","退房、整理行李","住宿"],["10:30","🏛️ 蘭陽博物館","雨天也適合的室內景點","景點"],["12:00","🍱 頭城午餐","頭城周邊用餐","美食"],["13:30","🌊 外澳海灘","看龜山島、散步、拍照","景點"],["15:00","☕ 海景咖啡","最後一段兩人時光","約會"],["16:00","🚗 回礁溪","慢慢開回車站周邊","交通"],["17:00","🎁 伴手禮／還車","買伴手禮並完成還車","購物／交通"],["18:59","🚆 礁溪出發","283 自強3000｜返回七堵","交通"]]};
 const places=["東旅湯宿京閣苑|住宿","三燔礁溪|聖誕晚餐","林美石磐步道|景點","五峰旗瀑布|景點","蘭陽博物館|景點","外澳海灘|景點","湯圍溝溫泉公園|夜遊"].map(x=>x.split("|"));
-let done=JSON.parse(localStorage.getItem("jxDone")||"{}"), exps=JSON.parse(localStorage.getItem("jxExps")||"[]");
-function tab(id,b){document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");if(id==="plan")day(1,document.querySelector(".days button"));if(id==="places")renderPlaces();if(id==="money")renderMoney()}
-function day(d,b){document.querySelectorAll(".days button").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");document.getElementById("timeline").innerHTML=data[d].map((x,i)=>{let k=d+"-"+i;return `<div class="row"><div class="time">${x[0]}</div><div class="line"><div class="dot"></div></div><div class="itemcard ${done[k]?'done':''}"><div class="top"><h3>${x[1]}</h3><button class="check" onclick="toggle('${k}',${d})">${done[k]?'✓':'○'}</button></div><div class="muted">${x[2]}</div><span class="tag">${x[3]}</span></div></div>`}).join("");progress()}
-function toggle(k,d){done[k]=!done[k];localStorage.setItem("jxDone",JSON.stringify(done));day(d,document.querySelector(".days button.sel"))}
+function ld(k,f){try{return JSON.parse(localStorage.getItem(k)||f)}catch(e){return JSON.parse(f)}}function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+let done=ld("jxDone","{}"), exps=ld("jxExps","[]");
+function tab(id,b){document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");if(id==="plan"){let bs=document.querySelectorAll(".days button");day(curDay,bs[curDay-1])}if(id==="places")renderPlaces();if(id==="money")renderMoney()}
+let curDay=1;function day(d,b){curDay=d;document.querySelectorAll(".days button").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");document.getElementById("timeline").innerHTML=data[d].map((x,i)=>{let k=d+"-"+i;return `<div class="row"><div class="time">${x[0]}</div><div class="line"><div class="dot"></div></div><div class="itemcard ${done[k]?'done':''}"><div class="top"><h3>${x[1]}</h3><button class="check" onclick="toggle('${k}',${d})">${done[k]?'✓':'○'}</button></div><div class="muted">${x[2]}</div><span class="tag">${x[3]}</span></div></div>`}).join("");progress()}
+function toggle(k,d){done[k]=!done[k];sv("jxDone",done);day(d,document.querySelector(".days button.sel"))}
 function progress(){let n=Object.values(data).flat().length,d=Object.values(done).filter(Boolean).length;document.getElementById("ptext").textContent=`${d} / ${n} 個行程完成`;document.getElementById("bar").style.width=(d/n*100)+"%"}
 function renderPlaces(){document.getElementById("placesList").innerHTML=places.map(p=>`<div class="box"><div class="top"><div><h2>${p[0]}</h2><span class="tag">${p[1]}</span></div><a class="map" target="_blank" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p[0])}">🗺️ 導航</a></div></div>`).join("")}
-function renderMoney(){document.getElementById("expenses").innerHTML=exps.map((e,i)=>`<div class="exp"><input value="${e.n}" onchange="exps[${i].n=this.value;saveMoney()"><input type="number" value="${e.a}" onchange="exps[${i}].a=+this.value;saveMoney()"><button class="check" onclick="exps.splice(${i},1);saveMoney()">刪除</button></div>`).join("");let t=exps.reduce((s,e)=>s+(+e.a||0),0);document.getElementById("total").textContent="NT$"+t.toLocaleString();document.getElementById("per").textContent="NT$"+Math.round(t/2).toLocaleString()}
-function addExp(){exps.push({n:"新項目",a:0});saveMoney()}function saveMoney(){localStorage.setItem("jxExps",JSON.stringify(exps));renderMoney()}
+function renderMoney(){document.getElementById("expenses").innerHTML=exps.map((e,i)=>`<div class="exp"><input value="${String(e.n).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" onchange="exps[${i}].n=this.value;saveMoney()"><input type="number" value="${e.a}" onchange="exps[${i}].a=+this.value;saveMoney()"><button class="check" onclick="exps.splice(${i},1);saveMoney()">刪除</button></div>`).join("");document.getElementById("emptyExp").style.display=exps.length?"none":"block";let t=exps.reduce((s,e)=>s+(+e.a||0),0);document.getElementById("total").textContent="NT$"+t.toLocaleString();document.getElementById("per").textContent="NT$"+Math.round(t/2).toLocaleString()}
+function addExp(){exps.push({n:"新項目",a:0});saveMoney()}function saveMoney(){sv("jxExps",exps);renderMoney()}
 function countdown(){let d=new Date("2026-12-25T09:53:00+08:00")-new Date(),e=document.getElementById("count");if(d<=0){e.textContent="旅程開始了 ❤️";return}let D=Math.floor(d/86400000),H=Math.floor(d%86400000/3600000),M=Math.floor(d%3600000/60000);e.textContent=`${D}天 ${H}小時 ${M}分鐘`}
 setInterval(countdown,30000);countdown();day(1,document.querySelector(".days button"));renderPlaces();renderMoney();progress();
 </script></body></html>
