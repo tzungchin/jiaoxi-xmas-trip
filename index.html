@@ -16,8 +16,8 @@ header{padding:28px 20px 24px;color:#fff;background:linear-gradient(145deg,var(-
 .title{font-size:29px;font-weight:850;margin:6px 0}
 .sub{opacity:.9}
 .pill{display:inline-block;margin-top:13px;padding:8px 12px;border:1px solid #fff5;border-radius:20px;background:#fff1}
-nav{position:sticky;top:0;z-index:5;display:flex;padding:9px 10px;gap:6px;background:#fffaf7dd;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-nav button{flex:1;border:0;border-radius:14px;background:transparent;padding:10px 3px;font-weight:750;color:var(--muted);cursor:pointer}
+nav{position:sticky;top:0;z-index:5;display:flex;padding:9px 6px;gap:4px;background:#fffaf7dd;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav button{flex:1;border:0;border-radius:12px;background:transparent;padding:10px 2px;font-size:13px;font-weight:750;color:var(--muted);cursor:pointer}
 nav button.active{background:#f0dfe0;color:var(--red)}
 main{padding:17px}
 .panel{display:none}
@@ -30,7 +30,7 @@ h3{margin:0;font-size:16px}
 .count{font-size:27px;font-weight:850;color:var(--red);margin:7px 0}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .stat{background:#fff;border:1px solid var(--line);border-radius:17px;padding:14px}
-.stat b{display:block;font-size:20px;color:var(--red);margin:4px 0}
+.stat b{display:block;font-size:18px;color:var(--red);margin:4px 0}
 .barbg{height:8px;background:#eee2dc;border-radius:99px;overflow:hidden}
 .bar{height:100%;background:var(--gold);width:0;transition:width .3s}
 .days{display:flex;gap:8px;margin-bottom:13px}
@@ -48,10 +48,13 @@ h3{margin:0;font-size:16px}
 .check{border:1px solid var(--line);background:#fff;border-radius:10px;padding:5px 10px;cursor:pointer}
 .tag{display:inline-block;margin-top:7px;padding:3px 7px;border-radius:9px;background:#f5e8dd;color:#795544;font-size:11px}
 .map{display:inline-block;border-radius:10px;padding:8px 12px;background:#f3e9e3;color:#70463b;font-size:12px;font-weight:750;text-decoration:none;margin-top:8px}
-.exp{display:grid;grid-template-columns:1fr 95px 55px;gap:6px;margin-top:8px}
-.exp input{min-width:0;padding:10px;border:1px solid var(--line);border-radius:10px}
+.exp{display:grid;grid-template-columns:1fr 80px 75px 45px;gap:5px;margin-top:8px;align-items:center}
+.exp input,.exp select{min-width:0;padding:8px;border:1px solid var(--line);border-radius:10px;font-size:12px}
 .add{width:100%;margin-top:10px;padding:11px;border:0;border-radius:12px;background:var(--red);color:#fff;font-weight:800;cursor:pointer}
 .note{padding:12px;border-radius:14px;background:#fff5df;border:1px solid #efd9a9;font-size:13px;line-height:1.5}
+.pack-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f2e7e0}
+.pack-item:last-child{border-bottom:none}
+.pack-item.done span{text-decoration:line-through;color:var(--muted)}
 .footer{text-align:center;color:var(--muted);font-size:12px;margin:25px 0}
 </style>
 </head>
@@ -67,8 +70,9 @@ h3{margin:0;font-size:16px}
   <nav>
     <button class="active" onclick="tab('home',this)">首頁</button>
     <button onclick="tab('plan',this)">行程</button>
+    <button onclick="tab('pack',this)">行李</button>
     <button onclick="tab('places',this)">景點</button>
-    <button onclick="tab('money',this)">旅費</button>
+    <button onclick="tab('money',this)">分帳</button>
   </nav>
 
   <main>
@@ -102,6 +106,21 @@ h3{margin:0;font-size:16px}
       <div id="timeline"></div>
     </section>
 
+    <section id="pack" class="panel">
+      <div class="box">
+        <h2>🧳 行李打包清單</h2>
+        <div class="muted">出發前檢查一下，重要物品不漏帶！</div>
+      </div>
+      <div id="packList"></div>
+      <div class="box">
+        <h3>＋ 新增自訂物品</h3>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <input id="newPack" placeholder="例如：拍立得底片" style="flex:1;padding:10px;border:1px solid var(--line);border-radius:10px">
+          <button onclick="addPackItem()" style="padding:10px 15px;background:var(--red);color:#fff;border:0;border-radius:10px;font-weight:bold">新增</button>
+        </div>
+      </div>
+    </section>
+
     <section id="places" class="panel">
       <div class="box">
         <h2>📍 景點與地點</h2>
@@ -112,14 +131,17 @@ h3{margin:0;font-size:16px}
 
     <section id="money" class="panel">
       <div class="box">
-        <h2>💰 旅行花費</h2>
+        <h2>💰 旅費與分帳計算機</h2>
         <div class="grid">
           <div class="stat">總花費<b id="total">NT$0</b></div>
-          <div class="stat">每人約<b id="per">NT$0</b></div>
+          <div class="stat">每人應負擔<b id="per">NT$0</b></div>
         </div>
-        <div class="muted" id="emptyExp" style="margin-top:8px">還沒有花費，點下方新增（車票、住宿、晚餐…）。</div>
+        <div id="settleBox" class="note" style="margin-top:10px;background:#eef6f2;border-color:#b8dc8e;color:#1e4d3b;font-weight:bold">
+          結算計算中…
+        </div>
+        <div class="muted" id="emptyExp" style="margin-top:8px">還沒有花費，點下方新增項目。</div>
         <div id="expenses"></div>
-        <button class="add" onclick="addExp()">＋ 新增一筆</button>
+        <button class="add" onclick="addExp()">＋ 新增花費</button>
       </div>
     </section>
 
@@ -155,6 +177,13 @@ const data = {
   ]
 };
 
+const defaultPack = [
+  { cat: "♨️ 泡湯必備", items: ["泳衣 / 泳帽", "保濕保養品 / 面膜", "身體乳液"] },
+  { cat: "🎄 聖誕約會", items: ["聖誕交換禮物", "拍立得 / 相機", "好看的約會穿搭"] },
+  { cat: "🪪 證件交通", items: ["雙方身分證件", "汽車駕照", "火車票取碼 / 悠遊卡"] },
+  { cat: "☂️ 隨身物品", items: ["雨具 / 折傘", "行動電源 & 充電線", "個人常備藥品"] }
+];
+
 const places = [
   { name: "東旅湯宿京閣苑", tag: "住宿", desc: "濃濃日式風情溫泉飯店，全館提供客房獨立泡湯池，並備有免費下午茶與自助早餐。" },
   { name: "三燔礁溪", tag: "聖誕晚餐", desc: "晶泉豐旅旗下精緻餐廳，主打高質感壽喜燒與涮涮鍋放題，還有豐富沙拉吧與哈根達斯冰淇淋。" },
@@ -168,7 +197,7 @@ const places = [
 function ld(k,f){try{return JSON.parse(localStorage.getItem(k)||f)}catch(e){return JSON.parse(f)}}
 function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 
-let done = ld("jxDone", "{}"), exps = ld("jxExps", "[]"), curDay = 1;
+let done = ld("jxDone", "{}"), exps = ld("jxExps", "[]"), packData = ld("jxPack", "{}"), curDay = 1;
 
 function tab(id, b) {
   document.querySelectorAll(".panel").forEach(x => x.classList.remove("active"));
@@ -176,6 +205,7 @@ function tab(id, b) {
   document.querySelectorAll("nav button").forEach(x => x.classList.remove("active"));
   b.classList.add("active");
   if(id === "plan") { let bs = document.querySelectorAll(".days button"); day(curDay, bs[curDay-1]); }
+  if(id === "pack") renderPack();
   if(id === "places") renderPlaces();
   if(id === "money") renderMoney();
 }
@@ -214,6 +244,54 @@ function progress() {
   document.getElementById("bar").style.width = (d / n * 100) + "%";
 }
 
+function renderPack() {
+  let html = "";
+  defaultPack.forEach((g, gi) => {
+    html += `<div class="box"><h2>${g.cat}</h2>`;
+    g.items.forEach((item, ii) => {
+      let k = `def-${gi}-${ii}`;
+      let isChecked = packData[k] || false;
+      html += `<div class="pack-item ${isChecked ? 'done' : ''}">
+        <span>${item}</span>
+        <button class="check" onclick="togglePack('${k}')">${isChecked ? '✓ 已準備' : '○ 準備'}</button>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  
+  let customItems = packData["custom"] || [];
+  if(customItems.length) {
+    html += `<div class="box"><h2>⭐ 自訂項目</h2>`;
+    customItems.forEach((item, ci) => {
+      let k = `cust-${ci}`;
+      let isChecked = packData[k] || false;
+      html += `<div class="pack-item ${isChecked ? 'done' : ''}">
+        <span>${item}</span>
+        <button class="check" onclick="togglePack('${k}')">${isChecked ? '✓' : '○'}</button>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+  document.getElementById("packList").innerHTML = html;
+}
+
+function togglePack(k) {
+  packData[k] = !packData[k];
+  sv("jxPack", packData);
+  renderPack();
+}
+
+function addPackItem() {
+  let inp = document.getElementById("newPack");
+  if(!inp.value.trim()) return;
+  let custom = packData["custom"] || [];
+  custom.push(inp.value.trim());
+  packData["custom"] = custom;
+  sv("jxPack", packData);
+  inp.value = "";
+  renderPack();
+}
+
 function renderPlaces() {
   document.getElementById("placesList").innerHTML = places.map(p => `
     <div class="box">
@@ -234,16 +312,41 @@ function renderMoney() {
     <div class="exp">
       <input value="${String(e.n).replace(/"/g, '&quot;')}" onchange="exps[${i}].n=this.value;saveMoney()">
       <input type="number" value="${e.a}" onchange="exps[${i}].a=+this.value;saveMoney()">
-      <button class="check" onclick="exps.splice(${i},1);saveMoney()">刪除</button>
+      <select onchange="exps[${i}].p=this.value;saveMoney()">
+        <option value="share" ${e.p==='share'?'selected':''}>平分</option>
+        <option value="A" ${e.p==='A'?'selected':''}>A 先付</option>
+        <option value="B" ${e.p==='B'?'selected':''}>B 先付</option>
+      </select>
+      <button class="check" onclick="exps.splice(${i},1);saveMoney()">刪</button>
     </div>
   `).join("");
   document.getElementById("emptyExp").style.display = exps.length ? "none" : "block";
-  let t = exps.reduce((s, e) => s + (+e.a || 0), 0);
-  document.getElementById("total").textContent = "NT$" + t.toLocaleString();
-  document.getElementById("per").textContent = "NT$" + Math.round(t / 2).toLocaleString();
+  
+  let total = 0, paidA = 0, paidB = 0;
+  exps.forEach(e => {
+    let amt = +e.a || 0;
+    total += amt;
+    if(e.p === 'A') paidA += amt;
+    if(e.p === 'B') paidB += amt;
+    if(e.p === 'share') { paidA += amt/2; paidB += amt/2; }
+  });
+  
+  document.getElementById("total").textContent = "NT$" + total.toLocaleString();
+  document.getElementById("per").textContent = "NT$" + Math.round(total / 2).toLocaleString();
+  
+  let settleText = "";
+  let diff = paidA - (total / 2);
+  if (Math.abs(diff) < 1) {
+    settleText = "🎉 目前雙方費用已完美平分！";
+  } else if (diff > 0) {
+    settleText = `💡 結算：B 需支付給 A <span style="font-size:16px;color:var(--red)">NT$ ${Math.round(diff).toLocaleString()}</span>`;
+  } else {
+    settleText = `💡 結算：A 需支付給 B <span style="font-size:16px;color:var(--red)">NT$ ${Math.round(-diff).toLocaleString()}</span>`;
+  }
+  document.getElementById("settleBox").innerHTML = settleText;
 }
 
-function addExp() { exps.push({ n: "新項目", a: 0 }); saveMoney(); }
+function addExp() { exps.push({ n: "新項目", a: 0, p: "share" }); saveMoney(); }
 function saveMoney() { sv("jxExps", exps); renderMoney(); }
 
 function countdown() {
