@@ -6,13 +6,15 @@
 <meta name="theme-color" content="#7b2633">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>礁溪聖誕小旅行</title>
+<!-- 載入 Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
 :root{--red:#7b2633;--red2:#a44752;--cream:#fff8f1;--card:#fff;--gold:#c89a45;--gold-light:#fbf4e6;--ink:#302928;--muted:#776d69;--line:#eadfd8}
 *{box-sizing:border-box}
 body{margin:0;background:linear-gradient(#fff7ef,#f7eee9);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:var(--ink)}
 .app{max-width:620px;margin:auto;min-height:100vh;padding-bottom:80px;padding-top:env(safe-area-inset-top,0px)}
 
-/* Hero 主視覺 */
 header{padding:32px 20px 28px;color:#fff;background:linear-gradient(145deg,#5e1b25,var(--red),var(--red2));border-radius:0 0 32px 32px;box-shadow:0 10px 30px #5e1b2540;position:relative;overflow:hidden}
 header::after{content:"🎄";position:absolute;right:15px;bottom:-10px;font-size:90px;opacity:.15;pointer-events:none}
 .hero-tag{display:inline-block;padding:4px 12px;background:#ffffff24;backdrop-filter:blur(5px);border:1px solid #ffffff40;border-radius:20px;font-size:11px;letter-spacing:1.5px;font-weight:700}
@@ -21,7 +23,6 @@ header::after{content:"🎄";position:absolute;right:15px;bottom:-10px;font-size
 .hero-pills{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
 .pill{padding:6px 12px;border-radius:16px;background:#ffffff18;border:1px solid #ffffff30;font-size:12px;font-weight:600}
 
-/* 選單導航 */
 nav{position:sticky;top:0;z-index:5;display:flex;padding:9px 6px;gap:4px;background:#fffaf7dd;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 nav button{flex:1;border:0;border-radius:12px;background:transparent;padding:10px 2px;font-size:13px;font-weight:750;color:var(--muted);cursor:pointer;transition:all .2s}
 nav button.active{background:#f0dfe0;color:var(--red)}
@@ -35,14 +36,16 @@ h3{margin:0;font-size:16px}
 .muted{color:var(--muted);font-size:13px;line-height:1.55}
 .desc{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);color:#554c48;font-size:13px;line-height:1.5}
 
-/* 「下一站」特化卡片 */
 .next-card{background:linear-gradient(135deg,var(--gold-light),#fff);border:2px solid var(--gold);position:relative;overflow:hidden}
-.next-card::before{content:"NEXT";position:absolute;right:-10px;top:-10px;font-size:40px;font-weight:900;color:var(--gold);opacity:.08}
 .next-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .next-badge{background:var(--gold);color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:10px}
 .next-title{font-size:22px;font-weight:850;color:var(--ink);margin:4px 0}
 .next-time{font-size:14px;color:var(--red);font-weight:800;margin-bottom:6px}
 .btn-nav-next{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:12px;margin-top:12px;background:var(--red);color:#fff;border:0;border-radius:14px;font-weight:800;font-size:14px;text-decoration:none;box-shadow:0 4px 12px #7b263333;cursor:pointer}
+
+.sync-status{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:bold;margin-left:auto}
+.sync-online{background:#e8f5e9;color:#2e7d32}
+.sync-offline{background:#ffebee;color:#c62828}
 
 .count{font-size:26px;font-weight:850;color:var(--red);margin:6px 0}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -65,7 +68,6 @@ h3{margin:0;font-size:16px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .check{border:1px solid var(--line);background:#fff;border-radius:10px;padding:5px 10px;cursor:pointer;font-size:12px;font-weight:700}
 .tag{display:inline-block;margin-top:7px;padding:3px 8px;border-radius:8px;background:#f5e8dd;color:#795544;font-size:11px;font-weight:600}
-.map{display:inline-block;border-radius:10px;padding:8px 12px;background:#f3e9e3;color:#70463b;font-size:12px;font-weight:750;text-decoration:none;margin-top:8px}
 
 .exp{display:grid;grid-template-columns:1fr 75px 75px 40px;gap:5px;margin-top:8px;align-items:center}
 .exp input,.exp select{min-width:0;padding:8px;border:1px solid var(--line);border-radius:10px;font-size:12px}
@@ -81,12 +83,15 @@ h3{margin:0;font-size:16px}
 <body>
 <div class="app">
   <header>
-    <div class="hero-tag">CHRISTMAS 2026 · COUPLE TRIP</div>
+    <div style="display:flex;align-items:center">
+      <div class="hero-tag">CHRISTMAS 2026 · COUPLE TRIP</div>
+      <span id="syncBadge" class="sync-status sync-offline">離線模式</span>
+    </div>
     <div class="hero-title">🎄 礁溪聖誕小旅行</div>
     <div class="hero-sub">兩天一夜 · 七堵 ⇄ 礁溪<br>溫泉浸泡 × 聖誕大餐 × 外澳海景</div>
     <div class="hero-pills">
       <div class="pill">📅 12/25 (五) — 12/26 (六)</div>
-      <div class="pill">❤️ 雙人浪漫提案</div>
+      <div class="pill">❤️ 雙人即時同步中</div>
     </div>
   </header>
   
@@ -99,10 +104,7 @@ h3{margin:0;font-size:16px}
   </nav>
 
   <main>
-    <!-- 首頁面板 -->
     <section id="home" class="panel active">
-      
-      <!-- 智慧下一站卡片 -->
       <div class="box next-card">
         <div class="next-header">
           <span class="next-badge">🧭 現在要去哪裡</span>
@@ -118,14 +120,12 @@ h3{margin:0;font-size:16px}
         <a id="nextMapBtn" class="btn-nav-next" target="_blank" href="#">🗺️ 導航到下一站</a>
       </div>
 
-      <!-- 倒數卡片 -->
       <div class="box">
         <h2>❤️ 距離出發時間</h2>
         <div id="count" class="count">計算中…</div>
         <div class="muted">2026/12/25 09:53 · 七堵車站開車</div>
       </div>
 
-      <!-- 快速資訊卡 -->
       <div class="grid">
         <div class="stat">🚆 去程車次<b>09:53</b><span class="muted">278 自強3000</span></div>
         <div class="stat">🚆 回程車次<b>18:59</b><span class="muted">283 自強3000</span></div>
@@ -133,34 +133,23 @@ h3{margin:0;font-size:16px}
         <div class="stat">🎄 聖誕大餐<b>三燔礁溪</b><span class="muted">18:00–20:00 晚宴</span></div>
       </div>
 
-      <!-- 行程與行李進度卡 -->
       <div class="box" style="margin-top:14px">
         <h2>📊 旅行準備與完成進度</h2>
-        
         <div style="margin-top:10px">
           <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700">
-            <span>🗓️ 行程完成度</span>
-            <span id="ptext">0 / 0</span>
+            <span>🗓️ 行程完成度</span><span id="ptext">0 / 0</span>
           </div>
           <div class="barbg"><div id="bar" class="bar"></div></div>
         </div>
-
         <div style="margin-top:14px">
           <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700">
-            <span>🧳 行李打包進度</span>
-            <span id="packPtext">0 / 0</span>
+            <span>🧳 行李打包進度</span><span id="packPtext">0 / 0</span>
           </div>
           <div class="barbg"><div id="packBar" class="bar" style="background:var(--red)"></div></div>
         </div>
       </div>
-
-      <!-- 訂票提醒卡 -->
-      <div class="note">
-        🚆 <b>臺鐵連假訂票提醒</b><br>12/25 行憲紀念日連假車票將於 <b>2026/11/24 00:00</b> 開放搶票，記得提醒對方設鬧鐘！
-      </div>
     </section>
 
-    <!-- 行程面板 -->
     <section id="plan" class="panel">
       <div class="days">
         <button class="sel" onclick="day(1,this)">12/25 · Day 1</button>
@@ -169,11 +158,10 @@ h3{margin:0;font-size:16px}
       <div id="timeline"></div>
     </section>
 
-    <!-- 行李面板 -->
     <section id="pack" class="panel">
       <div class="box">
         <h2>🧳 雙人行李打包清單</h2>
-        <div class="muted">出發前檢查一下，重要物品不漏帶！</div>
+        <div class="muted">勾選項目會即時同步給對方！</div>
       </div>
       <div id="packList"></div>
       <div class="box">
@@ -185,7 +173,6 @@ h3{margin:0;font-size:16px}
       </div>
     </section>
 
-    <!-- 景點面板 -->
     <section id="places" class="panel">
       <div class="box">
         <h2>📍 景點與地點導航</h2>
@@ -194,7 +181,6 @@ h3{margin:0;font-size:16px}
       <div id="placesList"></div>
     </section>
 
-    <!-- 分帳面板 -->
     <section id="money" class="panel">
       <div class="box">
         <h2>💰 旅費與平分計算機</h2>
@@ -205,7 +191,6 @@ h3{margin:0;font-size:16px}
         <div id="settleBox" class="note" style="margin-top:10px;background:#eef6f2;border-color:#b8dc8e;color:#1e4d3b;font-weight:bold">
           結算計算中…
         </div>
-        <div class="muted" id="emptyExp" style="margin-top:8px">還沒有花費，點下方新增項目。</div>
         <div id="expenses"></div>
         <button class="add" onclick="addExp()">＋ 新增花費</button>
       </div>
@@ -216,9 +201,29 @@ h3{margin:0;font-size:16px}
 </div>
 
 <script>
-// 行程資料 (含日期時間方便自動判定)
+// 精確帶入你專屬的完整 Firebase 連線憑證
+const firebaseConfig = {
+  apiKey: "AIzaSyDVIhnsQO6EZFabulOwTvD8X56FPLkB0TA",
+  authDomain: "jiaoxi-trip-b9d86.firebaseapp.com",
+  databaseURL: "https://jiaoxi-trip-b9d86-default-rtdb.firebaseio.com",
+  projectId: "jiaoxi-trip-b9d86",
+  storageBucket: "jiaoxi-trip-b9d86.firebasestorage.app",
+  messagingSenderId: "80737502666",
+  appId: "1:80737502666:web:a2d2ee8eb4a59ebb6c3b33",
+  measurementId: "G-XLB4DNT675"
+};
+
+let db = null;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.database();
+  document.getElementById("syncBadge").textContent = "🟢 即時同步中";
+  document.getElementById("syncBadge").className = "sync-status sync-online";
+} catch(e) {
+  console.log("Firebase 初始化異常", e);
+}
+
 const fullSchedule = [
-  // Day 1
   { day:1, time:"09:53", datetime:"2026-12-25T09:53:00", title:"🚆 七堵出發", desc:"278 次自強3000｜開啟聖誕小旅行", tag:"交通", spot:"七堵車站" },
   { day:1, time:"10:42", datetime:"2026-12-25T10:42:00", title:"📍 抵達礁溪", desc:"抵達礁溪車站，準備取車或寄放行李", tag:"交通", spot:"礁溪火車站" },
   { day:1, time:"11:20", datetime:"2026-12-25T11:20:00", title:"🍜 礁溪午餐", desc:"品嚐在地特色美食（八寶冬粉 / 蔥油餅）", tag:"美食", spot:"礁溪八寶冬粉" },
@@ -229,8 +234,6 @@ const fullSchedule = [
   { day:1, time:"18:00", datetime:"2026-12-25T18:00:00", title:"🎄 聖誕晚餐：三燔礁溪", desc:"享用高質感壽喜燒/涮涮鍋放題與哈根達斯", tag:"美食", spot:"三燔礁溪" },
   { day:1, time:"20:00", datetime:"2026-12-25T20:00:00", title:"🌙 礁溪夜間散步", desc:"湯圍溝溫泉公園散步、欣賞聖誕燈飾", tag:"約會", spot:"湯圍溝溫泉公園" },
   { day:1, time:"21:00", datetime:"2026-12-25T21:00:00", title:"❤️ 回飯店泡湯", desc:"第二次泡湯放鬆 ＋ 交換聖誕小禮物", tag:"兩人時間", spot:"東旅湯宿京閣苑" },
-  
-  // Day 2
   { day:2, time:"08:30", datetime:"2026-12-26T08:30:00", title:"☀️ 飯店早餐", desc:"享用精緻早餐，享受悠閒晨光", tag:"住宿", spot:"東旅湯宿京閣苑" },
   { day:2, time:"10:00", datetime:"2026-12-26T10:00:00", title:"🏨 Check-out", desc:"辦理退房，整理行李準備出發", tag:"住宿", spot:"東旅湯宿京閣苑" },
   { day:2, time:"10:30", datetime:"2026-12-26T10:30:00", title:"🏛 蘭陽博物館", desc:"欣賞單面山建築美學與宜蘭文化展覽", tag:"景點", spot:"蘭陽博物館" },
@@ -260,10 +263,25 @@ const places = [
   { name: "湯圍溝溫泉公園", tag: "夜遊", desc: "市區核心的溫泉公園，設有免費足湯，夜晚點燈後極具氛圍，周邊小吃林立。" }
 ];
 
-function ld(k,f){try{return JSON.parse(localStorage.getItem(k)||f)}catch(e){return JSON.parse(f)}}
-function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+let done = {}, exps = [], packData = {}, curDay = 1, manualNextIndex = -1;
 
-let done = ld("jxDone", "{}"), exps = ld("jxExps", "[]"), packData = ld("jxPack", "{}"), curDay = 1, manualNextIndex = -1;
+if (db) {
+  db.ref("tripData").on("value", (snapshot) => {
+    let val = snapshot.val() || {};
+    done = val.done || {};
+    exps = val.exps || [];
+    packData = val.packData || {};
+    renderTimeline(curDay);
+    renderPack();
+    renderMoney();
+  });
+}
+
+function syncToDb() {
+  if (db) {
+    db.ref("tripData").set({ done, exps, packData });
+  }
+}
 
 function tab(id, b) {
   document.querySelectorAll(".panel").forEach(x => x.classList.remove("active"));
@@ -276,7 +294,6 @@ function tab(id, b) {
   if(id === "money") renderMoney();
 }
 
-// 渲染「下一站」智慧卡片
 function updateNextSpotCard() {
   let now = new Date();
   let targetIdx = 0;
@@ -284,7 +301,6 @@ function updateNextSpotCard() {
   if (manualNextIndex !== -1) {
     targetIdx = manualNextIndex;
   } else {
-    // 根據當前時間自動搜尋下一個未進行或正要進行的行程
     let found = fullSchedule.findIndex(s => new Date(s.datetime) > now);
     targetIdx = found !== -1 ? found : 0;
   }
@@ -298,14 +314,12 @@ function updateNextSpotCard() {
 }
 
 function prevNextSpot() {
-  if (manualNextIndex === -1) manualNextIndex = 0;
-  else manualNextIndex = (manualNextIndex - 1 + fullSchedule.length) % fullSchedule.length;
+  manualNextIndex = manualNextIndex === -1 ? 0 : (manualNextIndex - 1 + fullSchedule.length) % fullSchedule.length;
   updateNextSpotCard();
 }
 
 function nextNextSpot() {
-  if (manualNextIndex === -1) manualNextIndex = 0;
-  else manualNextIndex = (manualNextIndex + 1) % fullSchedule.length;
+  manualNextIndex = manualNextIndex === -1 ? 0 : (manualNextIndex + 1) % fullSchedule.length;
   updateNextSpotCard();
 }
 
@@ -318,7 +332,7 @@ function day(d, b) {
 
 function renderTimeline(d) {
   let dayList = fullSchedule.filter(s => s.day === d);
-  document.getElementById("timeline").innerHTML = dayList.map((x, i) => {
+  document.getElementById("timeline").innerHTML = dayList.map((x) => {
     let globalIdx = fullSchedule.findIndex(s => s === x);
     let k = globalIdx;
     return `<div class="row">
@@ -339,7 +353,7 @@ function renderTimeline(d) {
 
 function toggle(k) {
   done[k] = !done[k];
-  sv("jxDone", done);
+  syncToDb();
   renderTimeline(curDay);
 }
 
@@ -382,15 +396,13 @@ function renderPack() {
     html += `</div>`;
   }
   document.getElementById("packList").innerHTML = html;
-  
-  // 更新首頁行李進度
   document.getElementById("packPtext").textContent = `${donePack} / ${totalPack}`;
   document.getElementById("packBar").style.width = totalPack ? (donePack / totalPack * 100) + "%" : "0%";
 }
 
 function togglePack(k) {
   packData[k] = !packData[k];
-  sv("jxPack", packData);
+  syncToDb();
   renderPack();
 }
 
@@ -400,7 +412,7 @@ function addPackItem() {
   let custom = packData["custom"] || [];
   custom.push(inp.value.trim());
   packData["custom"] = custom;
-  sv("jxPack", packData);
+  syncToDb();
   inp.value = "";
   renderPack();
 }
@@ -423,8 +435,8 @@ function renderPlaces() {
 function renderMoney() {
   document.getElementById("expenses").innerHTML = exps.map((e, i) => `
     <div class="exp">
-      <input value="${String(e.n).replace(/"/g, '&quot;')}" onchange="exps[${i}].n=this.value;saveMoney()">
-      <input type="number" value="${e.a}" onchange="exps[${i}].a=+this.value;saveMoney()">
+      <input value="${String(e.n||'').replace(/"/g, '&quot;')}" onchange="exps[${i}].n=this.value;saveMoney()">
+      <input type="number" value="${e.a||0}" onchange="exps[${i}].a=+this.value;saveMoney()">
       <select onchange="exps[${i}].p=this.value;saveMoney()">
         <option value="share" ${e.p==='share'?'selected':''}>平分</option>
         <option value="A" ${e.p==='A'?'selected':''}>A 先付</option>
@@ -433,7 +445,6 @@ function renderMoney() {
       <button class="check" onclick="exps.splice(${i},1);saveMoney()">刪</button>
     </div>
   `).join("");
-  document.getElementById("emptyExp").style.display = exps.length ? "none" : "block";
   
   let total = 0, paidA = 0, paidB = 0;
   exps.forEach(e => {
@@ -460,7 +471,7 @@ function renderMoney() {
 }
 
 function addExp() { exps.push({ n: "新項目", a: 0, p: "share" }); saveMoney(); }
-function saveMoney() { sv("jxExps", exps); renderMoney(); }
+function saveMoney() { syncToDb(); renderMoney(); }
 
 function countdown() {
   let target = new Date("2026-12-25T09:53:00+08:00") - new Date();
