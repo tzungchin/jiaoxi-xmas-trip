@@ -142,6 +142,7 @@ h3{margin:0;font-size:16px}
     </div>
   </header>
   
+  <!-- 選單按鈕順序：首頁、行程、景點、分帳、行李 -->
   <nav>
     <button class="active" onclick="tab('home',this)">首頁</button>
     <button onclick="tab('plan',this)">行程</button>
@@ -329,6 +330,13 @@ const places = [
   { name: "玉仁八寶冬粉", tag: "美食", desc: "Day 1 午餐推薦：台灣百大名店，配料豐富湯頭鮮甜，小菜種類極多。" },
   { name: "品誼古早味小吃", tag: "美食", desc: "Day 2 午餐推薦：頭城老街傳承三代，必吃古早味米粉羹、炸春捲與蘿蔔糕。" },
   { name: "阿茂麵攤", tag: "美食", desc: "Day 2 午餐備案：50 年在地老店，主打麻醬麵與古早味黑白切。" },
+  { name: "珈琲方島", tag: "美食", desc: "口袋名單：礁溪極具質感的獨立咖啡店，適合下午悠閒約會。" },
+  { name: "襄聚牛排", tag: "美食", desc: "口袋名單：在地平價高CP值台式排餐，肉質軟嫩多汁。" },
+  { name: "正常鮮肉小籠湯包", tag: "美食", desc: "口袋名單：礁溪熱門爆汁湯包，三星蔥香滿溢。" },
+  { name: "正好鮮肉小籠包", tag: "美食", desc: "口袋名單：皮薄餡多湯汁超豐富的名店湯包。" },
+  { name: "合鴨米灶腳", tag: "美食", desc: "口袋名單：無農藥鴨米飯與特色鴨肉料理，溫馨有古早味。" },
+  { name: "吉祥鮮肉小籠包", tag: "美食", desc: "口袋名單：頭城人氣湯包，500碗認證名店。" },
+  { name: "阿宗芋冰城 / 聯發芋冰老店", tag: "美食", desc: "口袋名單：傳統叭噗冰，頭城看海必吃古早味甜點。" },
   { name: "東旅湯宿京閣苑", tag: "住宿", desc: "濃濃日式風情溫泉飯店，全館提供客房獨立泡湯池，並備有免費下午茶與自助早餐。" },
   { name: "三燔礁溪", tag: "美食", desc: "聖誕大餐：晶泉豐旅旗下精緻餐廳，主打高質感壽喜燒放題與哈根達斯。" },
   { name: "林美石磐步道", tag: "景點", desc: "譽為宜蘭小太魯閣，沿途有清澈溪流與瀑布，全程平緩好走，非常適合情侶散步。" },
@@ -370,7 +378,7 @@ async function fetchWeather() {
     document.getElementById("wTemp").textContent = `${temp}°C`;
     document.getElementById("wRain").textContent = `🌧️ 降雨率 ${rainProb}%`;
     
-    let icon = "🌤️️", desc = "多雲時晴";
+    let icon = "🌤️", desc = "多雲時晴";
     if (code === 0) { icon = "☀️"; desc = "晴朗舒適"; }
     else if (code >= 1 && code <= 3) { icon = "🌤️"; desc = "多雲局部晴"; }
     else if (code >= 51) { icon = "🌧️"; desc = "有短暫陣雨"; }
