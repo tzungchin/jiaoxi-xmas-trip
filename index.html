@@ -108,12 +108,13 @@ h3{margin:0;font-size:16px}
     </div>
   </header>
   
+  <!-- 調整順序為：首頁、行程、景點、分帳、行李 -->
   <nav>
     <button class="active" onclick="tab('home',this)">首頁</button>
     <button onclick="tab('plan',this)">行程</button>
-    <button onclick="tab('pack',this)">行李</button>
     <button onclick="tab('places',this)">景點</button>
     <button onclick="tab('money',this)">分帳</button>
+    <button onclick="tab('pack',this)">行李</button>
   </nav>
 
   <main>
@@ -190,21 +191,6 @@ h3{margin:0;font-size:16px}
       <div id="timeline"></div>
     </section>
 
-    <section id="pack" class="panel">
-      <div class="box">
-        <h2>🧳 雙人行李打包清單</h2>
-        <div class="muted">勾選項目會即時同步給對方！</div>
-      </div>
-      <div id="packList"></div>
-      <div class="box">
-        <h3>＋ 新增自訂物品</h3>
-        <div style="display:flex;gap:8px;margin-top:8px">
-          <input id="newPack" placeholder="例如：拍立得底片" style="flex:1;padding:10px;border:1px solid var(--line);border-radius:10px">
-          <button onclick="addPackItem()" style="padding:10px 15px;background:var(--red);color:#fff;border:0;border-radius:10px;font-weight:bold">新增</button>
-        </div>
-      </div>
-    </section>
-
     <section id="places" class="panel">
       <div class="box">
         <h2>📍 景點與地點導航</h2>
@@ -225,6 +211,21 @@ h3{margin:0;font-size:16px}
         </div>
         <div id="expenses"></div>
         <button class="add" onclick="addExp()">＋ 新增花費</button>
+      </div>
+    </section>
+
+    <section id="pack" class="panel">
+      <div class="box">
+        <h2>🧳 雙人行李打包清單</h2>
+        <div class="muted">勾選項目會即時同步給對方！</div>
+      </div>
+      <div id="packList"></div>
+      <div class="box">
+        <h3>＋ 新增自訂物品</h3>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <input id="newPack" placeholder="例如：拍立得底片" style="flex:1;padding:10px;border:1px solid var(--line);border-radius:10px">
+          <button onclick="addPackItem()" style="padding:10px 15px;background:var(--red);color:#fff;border:0;border-radius:10px;font-weight:bold">新增</button>
+        </div>
       </div>
     </section>
 
