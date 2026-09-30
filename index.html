@@ -7,34 +7,52 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>礁溪聖誕小旅行</title>
 <style>
-:root{--red:#7b2633;--red2:#a44752;--cream:#fff8f1;--card:#fff;--gold:#c89a45;--ink:#302928;--muted:#776d69;--line:#eadfd8}
+:root{--red:#7b2633;--red2:#a44752;--cream:#fff8f1;--card:#fff;--gold:#c89a45;--gold-light:#fbf4e6;--ink:#302928;--muted:#776d69;--line:#eadfd8}
 *{box-sizing:border-box}
 body{margin:0;background:linear-gradient(#fff7ef,#f7eee9);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:var(--ink)}
 .app{max-width:620px;margin:auto;min-height:100vh;padding-bottom:80px;padding-top:env(safe-area-inset-top,0px)}
-header{padding:28px 20px 24px;color:#fff;background:linear-gradient(145deg,var(--red),var(--red2));border-radius:0 0 28px 28px;box-shadow:0 8px 25px #64263133}
-.small{font-size:12px;letter-spacing:2px;opacity:.8}
-.title{font-size:29px;font-weight:850;margin:6px 0}
-.sub{opacity:.9}
-.pill{display:inline-block;margin-top:13px;padding:8px 12px;border:1px solid #fff5;border-radius:20px;background:#fff1}
+
+/* Hero 主視覺 */
+header{padding:32px 20px 28px;color:#fff;background:linear-gradient(145deg,#5e1b25,var(--red),var(--red2));border-radius:0 0 32px 32px;box-shadow:0 10px 30px #5e1b2540;position:relative;overflow:hidden}
+header::after{content:"🎄";position:absolute;right:15px;bottom:-10px;font-size:90px;opacity:.15;pointer-events:none}
+.hero-tag{display:inline-block;padding:4px 12px;background:#ffffff24;backdrop-filter:blur(5px);border:1px solid #ffffff40;border-radius:20px;font-size:11px;letter-spacing:1.5px;font-weight:700}
+.hero-title{font-size:30px;font-weight:900;margin:10px 0 4px;letter-spacing:-0.5px}
+.hero-sub{font-size:13px;opacity:.9;line-height:1.4}
+.hero-pills{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.pill{padding:6px 12px;border-radius:16px;background:#ffffff18;border:1px solid #ffffff30;font-size:12px;font-weight:600}
+
+/* 選單導航 */
 nav{position:sticky;top:0;z-index:5;display:flex;padding:9px 6px;gap:4px;background:#fffaf7dd;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-nav button{flex:1;border:0;border-radius:12px;background:transparent;padding:10px 2px;font-size:13px;font-weight:750;color:var(--muted);cursor:pointer}
+nav button{flex:1;border:0;border-radius:12px;background:transparent;padding:10px 2px;font-size:13px;font-weight:750;color:var(--muted);cursor:pointer;transition:all .2s}
 nav button.active{background:#f0dfe0;color:var(--red)}
-main{padding:17px}
+
+main{padding:16px}
 .panel{display:none}
 .panel.active{display:block}
-.box,.itemcard{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:13px;box-shadow:0 5px 18px #5a3a280b}
-h2{margin:0 0 6px;font-size:20px}
+.box,.itemcard{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;margin-bottom:14px;box-shadow:0 6px 20px #5a3a280c}
+h2{margin:0 0 6px;font-size:19px;display:flex;align-items:center;gap:6px}
 h3{margin:0;font-size:16px}
 .muted{color:var(--muted);font-size:13px;line-height:1.55}
 .desc{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);color:#554c48;font-size:13px;line-height:1.5}
-.count{font-size:27px;font-weight:850;color:var(--red);margin:7px 0}
+
+/* 「下一站」特化卡片 */
+.next-card{background:linear-gradient(135deg,var(--gold-light),#fff);border:2px solid var(--gold);position:relative;overflow:hidden}
+.next-card::before{content:"NEXT";position:absolute;right:-10px;top:-10px;font-size:40px;font-weight:900;color:var(--gold);opacity:.08}
+.next-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.next-badge{background:var(--gold);color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:10px}
+.next-title{font-size:22px;font-weight:850;color:var(--ink);margin:4px 0}
+.next-time{font-size:14px;color:var(--red);font-weight:800;margin-bottom:6px}
+.btn-nav-next{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:12px;margin-top:12px;background:var(--red);color:#fff;border:0;border-radius:14px;font-weight:800;font-size:14px;text-decoration:none;box-shadow:0 4px 12px #7b263333;cursor:pointer}
+
+.count{font-size:26px;font-weight:850;color:var(--red);margin:6px 0}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{background:#fff;border:1px solid var(--line);border-radius:17px;padding:14px}
-.stat b{display:block;font-size:18px;color:var(--red);margin:4px 0}
-.barbg{height:8px;background:#eee2dc;border-radius:99px;overflow:hidden}
-.bar{height:100%;background:var(--gold);width:0;transition:width .3s}
+.stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}
+.stat b{display:block;font-size:17px;color:var(--red);margin:3px 0}
+.barbg{height:8px;background:#eee2dc;border-radius:99px;overflow:hidden;margin-top:8px}
+.bar{height:100%;background:var(--gold);width:0;transition:width .4s}
+
 .days{display:flex;gap:8px;margin-bottom:13px}
-.days button{padding:10px 13px;border:1px solid var(--line);background:#fff;border-radius:14px;font-weight:750;cursor:pointer}
+.days button{padding:10px 14px;border:1px solid var(--line);background:#fff;border-radius:14px;font-weight:750;cursor:pointer}
 .days button.sel{background:var(--red);color:#fff}
 .row{display:grid;grid-template-columns:57px 14px 1fr;gap:8px}
 .time{font-size:12px;font-weight:800;color:var(--red);text-align:right;padding-top:16px}
@@ -42,16 +60,18 @@ h3{margin:0;font-size:16px}
 .dot{width:11px;height:11px;border-radius:50%;background:var(--gold);margin-top:18px}
 .line:after{content:"";position:absolute;left:5px;top:28px;bottom:-16px;width:2px;background:#ead8ca}
 .row:last-child .line:after{display:none}
-.itemcard{margin:0;padding:13px}
-.itemcard.done{opacity:.52}
+.itemcard{margin:0;padding:14px}
+.itemcard.done{opacity:.5}
 .top{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.check{border:1px solid var(--line);background:#fff;border-radius:10px;padding:5px 10px;cursor:pointer}
-.tag{display:inline-block;margin-top:7px;padding:3px 7px;border-radius:9px;background:#f5e8dd;color:#795544;font-size:11px}
+.check{border:1px solid var(--line);background:#fff;border-radius:10px;padding:5px 10px;cursor:pointer;font-size:12px;font-weight:700}
+.tag{display:inline-block;margin-top:7px;padding:3px 8px;border-radius:8px;background:#f5e8dd;color:#795544;font-size:11px;font-weight:600}
 .map{display:inline-block;border-radius:10px;padding:8px 12px;background:#f3e9e3;color:#70463b;font-size:12px;font-weight:750;text-decoration:none;margin-top:8px}
-.exp{display:grid;grid-template-columns:1fr 80px 75px 45px;gap:5px;margin-top:8px;align-items:center}
+
+.exp{display:grid;grid-template-columns:1fr 75px 75px 40px;gap:5px;margin-top:8px;align-items:center}
 .exp input,.exp select{min-width:0;padding:8px;border:1px solid var(--line);border-radius:10px;font-size:12px}
-.add{width:100%;margin-top:10px;padding:11px;border:0;border-radius:12px;background:var(--red);color:#fff;font-weight:800;cursor:pointer}
-.note{padding:12px;border-radius:14px;background:#fff5df;border:1px solid #efd9a9;font-size:13px;line-height:1.5}
+.add{width:100%;margin-top:10px;padding:12px;border:0;border-radius:14px;background:var(--red);color:#fff;font-weight:800;cursor:pointer}
+.note{padding:13px;border-radius:16px;background:#fff5df;border:1px solid #efd9a9;font-size:13px;line-height:1.55}
+
 .pack-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f2e7e0}
 .pack-item:last-child{border-bottom:none}
 .pack-item.done span{text-decoration:line-through;color:var(--muted)}
@@ -61,10 +81,13 @@ h3{margin:0;font-size:16px}
 <body>
 <div class="app">
   <header>
-    <div class="small">CHRISTMAS 2026 · COUPLE TRIP</div>
-    <div class="title">🎄 礁溪聖誕小旅行</div>
-    <div class="sub">兩天一夜 · 七堵 → 礁溪 · 泡湯 × 美食 × 海景</div>
-    <div class="pill">12/25（五）— 12/26（六）</div>
+    <div class="hero-tag">CHRISTMAS 2026 · COUPLE TRIP</div>
+    <div class="hero-title">🎄 礁溪聖誕小旅行</div>
+    <div class="hero-sub">兩天一夜 · 七堵 ⇄ 礁溪<br>溫泉浸泡 × 聖誕大餐 × 外澳海景</div>
+    <div class="hero-pills">
+      <div class="pill">📅 12/25 (五) — 12/26 (六)</div>
+      <div class="pill">❤️ 雙人浪漫提案</div>
+    </div>
   </header>
   
   <nav>
@@ -76,28 +99,68 @@ h3{margin:0;font-size:16px}
   </nav>
 
   <main>
+    <!-- 首頁面板 -->
     <section id="home" class="panel active">
+      
+      <!-- 智慧下一站卡片 -->
+      <div class="box next-card">
+        <div class="next-header">
+          <span class="next-badge">🧭 現在要去哪裡</span>
+          <div style="font-size:12px;color:var(--muted)">
+            <button onclick="prevNextSpot()" style="border:0;background:none;cursor:pointer">◀</button>
+            <span id="nextIndexText">自動判定</span>
+            <button onclick="nextNextSpot()" style="border:0;background:none;cursor:pointer">▶</button>
+          </div>
+        </div>
+        <div class="next-time" id="nextTime">--:--</div>
+        <div class="next-title" id="nextTitle">正在計算下一個行程…</div>
+        <div class="muted" id="nextDesc">系統將根據目前時間自動為你導引下一站。</div>
+        <a id="nextMapBtn" class="btn-nav-next" target="_blank" href="#">🗺️ 導航到下一站</a>
+      </div>
+
+      <!-- 倒數卡片 -->
       <div class="box">
-        <h2>❤️ 距離出發</h2>
+        <h2>❤️ 距離出發時間</h2>
         <div id="count" class="count">計算中…</div>
-        <div class="muted">2026/12/25 09:53 · 七堵車站</div>
+        <div class="muted">2026/12/25 09:53 · 七堵車站開車</div>
       </div>
+
+      <!-- 快速資訊卡 -->
       <div class="grid">
-        <div class="stat">🚆 去程<b>09:53</b><span class="muted">278 自強3000</span></div>
-        <div class="stat">🚆 回程<b>18:59</b><span class="muted">283 自強3000</span></div>
-        <div class="stat">🏨 住宿<b>東旅湯宿京閣苑</b><span class="muted">12/25 入住</span></div>
-        <div class="stat">🎄 晚餐<b>三燔礁溪</b><span class="muted">18:00–20:00</span></div>
+        <div class="stat">🚆 去程車次<b>09:53</b><span class="muted">278 自強3000</span></div>
+        <div class="stat">🚆 回程車次<b>18:59</b><span class="muted">283 自強3000</span></div>
+        <div class="stat">🏨 聖誕住宿<b>東旅湯宿</b><span class="muted">京閣苑 / 16:00 入住</span></div>
+        <div class="stat">🎄 聖誕大餐<b>三燔礁溪</b><span class="muted">18:00–20:00 晚宴</span></div>
       </div>
-      <div class="box" style="margin-top:13px">
-        <h2>行程完成度</h2>
-        <div class="muted" id="ptext"></div>
-        <div class="barbg" style="margin-top:9px"><div id="bar" class="bar"></div></div>
+
+      <!-- 行程與行李進度卡 -->
+      <div class="box" style="margin-top:14px">
+        <h2>📊 旅行準備與完成進度</h2>
+        
+        <div style="margin-top:10px">
+          <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700">
+            <span>🗓️ 行程完成度</span>
+            <span id="ptext">0 / 0</span>
+          </div>
+          <div class="barbg"><div id="bar" class="bar"></div></div>
+        </div>
+
+        <div style="margin-top:14px">
+          <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700">
+            <span>🧳 行李打包進度</span>
+            <span id="packPtext">0 / 0</span>
+          </div>
+          <div class="barbg"><div id="packBar" class="bar" style="background:var(--red)"></div></div>
+        </div>
       </div>
+
+      <!-- 訂票提醒卡 -->
       <div class="note">
-        🚆 <b>訂票提醒</b><br>依臺鐵規範，12/25 連假車票於 <b>2026/11/24 00:00</b> 開放預訂，記得設定鬧鐘開搶！
+        🚆 <b>臺鐵連假訂票提醒</b><br>12/25 行憲紀念日連假車票將於 <b>2026/11/24 00:00</b> 開放搶票，記得提醒對方設鬧鐘！
       </div>
     </section>
 
+    <!-- 行程面板 -->
     <section id="plan" class="panel">
       <div class="days">
         <button class="sel" onclick="day(1,this)">12/25 · Day 1</button>
@@ -106,9 +169,10 @@ h3{margin:0;font-size:16px}
       <div id="timeline"></div>
     </section>
 
+    <!-- 行李面板 -->
     <section id="pack" class="panel">
       <div class="box">
-        <h2>🧳 行李打包清單</h2>
+        <h2>🧳 雙人行李打包清單</h2>
         <div class="muted">出發前檢查一下，重要物品不漏帶！</div>
       </div>
       <div id="packList"></div>
@@ -121,17 +185,19 @@ h3{margin:0;font-size:16px}
       </div>
     </section>
 
+    <!-- 景點面板 -->
     <section id="places" class="panel">
       <div class="box">
-        <h2>📍 景點與地點</h2>
-        <div class="muted">包含景點簡介與 Google Maps 導航連結。</div>
+        <h2>📍 景點與地點導航</h2>
+        <div class="muted">點擊開啟 Google Maps 直接導航。</div>
       </div>
       <div id="placesList"></div>
     </section>
 
+    <!-- 分帳面板 -->
     <section id="money" class="panel">
       <div class="box">
-        <h2>💰 旅費與分帳計算機</h2>
+        <h2>💰 旅費與平分計算機</h2>
         <div class="grid">
           <div class="stat">總花費<b id="total">NT$0</b></div>
           <div class="stat">每人應負擔<b id="per">NT$0</b></div>
@@ -150,38 +216,38 @@ h3{margin:0;font-size:16px}
 </div>
 
 <script>
-const data = {
-  1: [
-    ["09:53", "🚆 七堵出發", "278 自強3000｜開啟聖誕小旅行", "交通"],
-    ["10:42", "📍 抵達礁溪", "抵達礁溪車站，準備取車或寄放行李", "交通"],
-    ["11:20", "🍜 礁溪午餐", "品嚐在地特色美食（八寶冬粉 / 蔥油餅）", "美食"],
-    ["13:00", "🌿 林美石磐／五峰旗", "漫步低難度溪谷步道，吸收負離子", "景點"],
-    ["15:00", "☕ 情侶咖啡約會", "選間質感咖啡廳，聊天休息拍照", "約會"],
-    ["16:00", "🏨 入住東旅湯宿京閣苑", "Check-in 辦理入住，感受濃濃日式風情", "住宿"],
-    ["16:30", "♨️ 房內泡湯＆休息", "享受客房獨立湯屋，舒緩身心", "放鬆"],
-    ["18:00", "🎄 聖誕晚餐：三燔礁溪", "享用高質感壽喜燒/涮涮鍋放題與哈根達斯", "美食"],
-    ["20:00", "🌙 礁溪夜間散步", "湯圍溝溫泉公園散步、欣賞聖誕燈飾", "約會"],
-    ["21:00", "❤️ 回飯店泡湯", "第二次泡湯放鬆 ＋ 交換聖誕小禮物", "兩人時間"]
-  ],
-  2: [
-    ["08:30", "☀️ 飯店早餐", "享用精緻早餐，享受悠閒晨光", "住宿"],
-    ["10:00", "🏨 Check-out", "辦理退房，整理行李準備出發", "住宿"],
-    ["10:30", "🏛️ 蘭陽博物館", "欣賞單面山建築美學與宜蘭文化展覽", "景點"],
-    ["12:00", "🍜 頭城午餐", "品嚐頭城在地海鮮或老街小吃", "美食"],
-    ["13:30", "🌊 外澳看海", "外澳沙灘散步、遠眺龜山島海景", "景點"],
-    ["15:00", "☕ 海景咖啡", "坐在海景第一排咖啡廳享受最後時光", "約會"],
-    ["16:00", "🚗 回礁溪", "慢慢開車/搭車返回礁溪市區", "交通"],
-    ["16:30", "🛍️ 買伴手禮", "挑選奕順軒麵包/奶凍捲等在地名產", "購物"],
-    ["17:00", "🚗 還車 / 準備搭車", "完成還車手續，前往礁溪車站", "交通"],
-    ["18:59", "🚆 礁溪出發", "283 自強3000｜帶著美好回憶返回七堵", "交通"]
-  ]
-};
+// 行程資料 (含日期時間方便自動判定)
+const fullSchedule = [
+  // Day 1
+  { day:1, time:"09:53", datetime:"2026-12-25T09:53:00", title:"🚆 七堵出發", desc:"278 次自強3000｜開啟聖誕小旅行", tag:"交通", spot:"七堵車站" },
+  { day:1, time:"10:42", datetime:"2026-12-25T10:42:00", title:"📍 抵達礁溪", desc:"抵達礁溪車站，準備取車或寄放行李", tag:"交通", spot:"礁溪火車站" },
+  { day:1, time:"11:20", datetime:"2026-12-25T11:20:00", title:"🍜 礁溪午餐", desc:"品嚐在地特色美食（八寶冬粉 / 蔥油餅）", tag:"美食", spot:"礁溪八寶冬粉" },
+  { day:1, time:"13:00", datetime:"2026-12-25T13:00:00", title:"🌿 林美石磐 / 五峰旗", desc:"漫步低難度溪谷步道，吸收負離子", tag:"景點", spot:"林美石磐步道" },
+  { day:1, time:"15:00", datetime:"2026-12-25T15:00:00", title:"☕ 情侶咖啡約會", desc:"選間質感咖啡廳，聊天休息拍照", tag:"約會", spot:"礁溪咖啡廳" },
+  { day:1, time:"16:00", datetime:"2026-12-25T16:00:00", title:"🏨 入住東旅湯宿京閣苑", desc:"Check-in 辦理入住，感受濃濃日式風情", tag:"住宿", spot:"東旅湯宿京閣苑" },
+  { day:1, time:"16:30", datetime:"2026-12-25T16:30:00", title:"♨️ 房內泡湯＆休息", desc:"享受客房獨立湯屋，舒緩身心", tag:"放鬆", spot:"東旅湯宿京閣苑" },
+  { day:1, time:"18:00", datetime:"2026-12-25T18:00:00", title:"🎄 聖誕晚餐：三燔礁溪", desc:"享用高質感壽喜燒/涮涮鍋放題與哈根達斯", tag:"美食", spot:"三燔礁溪" },
+  { day:1, time:"20:00", datetime:"2026-12-25T20:00:00", title:"🌙 礁溪夜間散步", desc:"湯圍溝溫泉公園散步、欣賞聖誕燈飾", tag:"約會", spot:"湯圍溝溫泉公園" },
+  { day:1, time:"21:00", datetime:"2026-12-25T21:00:00", title:"❤️ 回飯店泡湯", desc:"第二次泡湯放鬆 ＋ 交換聖誕小禮物", tag:"兩人時間", spot:"東旅湯宿京閣苑" },
+  
+  // Day 2
+  { day:2, time:"08:30", datetime:"2026-12-26T08:30:00", title:"☀️ 飯店早餐", desc:"享用精緻早餐，享受悠閒晨光", tag:"住宿", spot:"東旅湯宿京閣苑" },
+  { day:2, time:"10:00", datetime:"2026-12-26T10:00:00", title:"🏨 Check-out", desc:"辦理退房，整理行李準備出發", tag:"住宿", spot:"東旅湯宿京閣苑" },
+  { day:2, time:"10:30", datetime:"2026-12-26T10:30:00", title:"🏛 蘭陽博物館", desc:"欣賞單面山建築美學與宜蘭文化展覽", tag:"景點", spot:"蘭陽博物館" },
+  { day:2, time:"12:00", datetime:"2026-12-26T12:00:00", title:"🍜 頭城午餐", desc:"品嚐頭城在地海鮮或老街小吃", tag:"美食", spot:"頭城老街" },
+  { day:2, time:"13:30", datetime:"2026-12-26T13:30:00", title:"🌊 外澳看海", desc:"外澳沙灘散步、遠眺龜山島海景", tag:"景點", spot:"外澳沙灘" },
+  { day:2, time:"15:00", datetime:"2026-12-26T15:00:00", title:"☕ 海景咖啡", desc:"坐在海景第一排咖啡廳享受最後時光", tag:"約會", spot:"外澳海景咖啡" },
+  { day:2, time:"16:00", datetime:"2026-12-26T16:00:00", title:"🚗 回礁溪", desc:"慢慢開車/搭車返回礁溪市區", tag:"交通", spot:"礁溪車站" },
+  { day:2, time:"16:30", datetime:"2026-12-26T16:30:00", title:"🛍 買伴手禮", desc:"挑選奕順軒麵包/奶凍捲等在地名產", tag:"購物", spot:"奕順軒礁溪店" },
+  { day:2, time:"17:00", datetime:"2026-12-26T17:00:00", title:"🚗 還車 / 準備搭車", desc:"完成還車手續，前往礁溪車站", tag:"交通", spot:"礁溪火車站" },
+  { day:2, time:"18:59", datetime:"2026-12-26T18:59:00", title:"🚆 礁溪出發", desc:"283 次自強3000｜帶著美好回憶返回七堵", tag:"交通", spot:"礁溪火車站" }
+];
 
 const defaultPack = [
   { cat: "♨️ 泡湯必備", items: ["泳衣 / 泳帽", "保濕保養品 / 面膜", "身體乳液"] },
   { cat: "🎄 聖誕約會", items: ["聖誕交換禮物", "拍立得 / 相機", "好看的約會穿搭"] },
   { cat: "🪪 證件交通", items: ["雙方身分證件", "汽車駕照", "火車票取碼 / 悠遊卡"] },
-  { cat: "☂️ 隨身物品", items: ["雨具 / 折傘", "行動電源 & 充電線", "個人常備藥品"] }
+  { cat: "☂ 隨身物品", items: ["雨具 / 折傘", "行動電源 & 充電線", "個人常備藥品"] }
 ];
 
 const places = [
@@ -197,60 +263,101 @@ const places = [
 function ld(k,f){try{return JSON.parse(localStorage.getItem(k)||f)}catch(e){return JSON.parse(f)}}
 function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 
-let done = ld("jxDone", "{}"), exps = ld("jxExps", "[]"), packData = ld("jxPack", "{}"), curDay = 1;
+let done = ld("jxDone", "{}"), exps = ld("jxExps", "[]"), packData = ld("jxPack", "{}"), curDay = 1, manualNextIndex = -1;
 
 function tab(id, b) {
   document.querySelectorAll(".panel").forEach(x => x.classList.remove("active"));
   document.getElementById(id).classList.add("active");
   document.querySelectorAll("nav button").forEach(x => x.classList.remove("active"));
   b.classList.add("active");
-  if(id === "plan") { let bs = document.querySelectorAll(".days button"); day(curDay, bs[curDay-1]); }
+  if(id === "plan") renderTimeline(curDay);
   if(id === "pack") renderPack();
   if(id === "places") renderPlaces();
   if(id === "money") renderMoney();
+}
+
+// 渲染「下一站」智慧卡片
+function updateNextSpotCard() {
+  let now = new Date();
+  let targetIdx = 0;
+
+  if (manualNextIndex !== -1) {
+    targetIdx = manualNextIndex;
+  } else {
+    // 根據當前時間自動搜尋下一個未進行或正要進行的行程
+    let found = fullSchedule.findIndex(s => new Date(s.datetime) > now);
+    targetIdx = found !== -1 ? found : 0;
+  }
+
+  let spot = fullSchedule[targetIdx];
+  document.getElementById("nextTime").textContent = `Day ${spot.day} · ${spot.time}`;
+  document.getElementById("nextTitle").textContent = spot.title;
+  document.getElementById("nextDesc").textContent = spot.desc;
+  document.getElementById("nextMapBtn").href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.spot || spot.title)}`;
+  document.getElementById("nextIndexText").textContent = manualNextIndex === -1 ? "自動判斷" : `${targetIdx + 1}/${fullSchedule.length}`;
+}
+
+function prevNextSpot() {
+  if (manualNextIndex === -1) manualNextIndex = 0;
+  else manualNextIndex = (manualNextIndex - 1 + fullSchedule.length) % fullSchedule.length;
+  updateNextSpotCard();
+}
+
+function nextNextSpot() {
+  if (manualNextIndex === -1) manualNextIndex = 0;
+  else manualNextIndex = (manualNextIndex + 1) % fullSchedule.length;
+  updateNextSpotCard();
 }
 
 function day(d, b) {
   curDay = d;
   document.querySelectorAll(".days button").forEach(x => x.classList.remove("sel"));
   b.classList.add("sel");
-  document.getElementById("timeline").innerHTML = data[d].map((x, i) => {
-    let k = d + "-" + i;
+  renderTimeline(d);
+}
+
+function renderTimeline(d) {
+  let dayList = fullSchedule.filter(s => s.day === d);
+  document.getElementById("timeline").innerHTML = dayList.map((x, i) => {
+    let globalIdx = fullSchedule.findIndex(s => s === x);
+    let k = globalIdx;
     return `<div class="row">
-      <div class="time">${x[0]}</div>
+      <div class="time">${x.time}</div>
       <div class="line"><div class="dot"></div></div>
       <div class="itemcard ${done[k] ? 'done' : ''}">
         <div class="top">
-          <h3>${x[1]}</h3>
-          <button class="check" onclick="toggle('${k}', ${d})">${done[k] ? '✓ 已完成' : '○ 打勾'}</button>
+          <h3>${x.title}</h3>
+          <button class="check" onclick="toggle('${k}')">${done[k] ? '✓ 已完成' : '○ 打勾'}</button>
         </div>
-        <div class="muted">${x[2]}</div>
-        <span class="tag">${x[3]}</span>
+        <div class="muted">${x.desc}</div>
+        <span class="tag">${x.tag}</span>
       </div>
     </div>`;
   }).join("");
   progress();
 }
 
-function toggle(k, d) {
+function toggle(k) {
   done[k] = !done[k];
   sv("jxDone", done);
-  day(d, document.querySelectorAll(".days button")[d-1]);
+  renderTimeline(curDay);
 }
 
 function progress() {
-  let n = Object.values(data).flat().length, d = Object.values(done).filter(Boolean).length;
-  document.getElementById("ptext").textContent = `${d} / ${n} 個行程完成`;
+  let n = fullSchedule.length, d = Object.values(done).filter(Boolean).length;
+  document.getElementById("ptext").textContent = `${d} / ${n}`;
   document.getElementById("bar").style.width = (d / n * 100) + "%";
 }
 
 function renderPack() {
-  let html = "";
+  let html = "", totalPack = 0, donePack = 0;
   defaultPack.forEach((g, gi) => {
     html += `<div class="box"><h2>${g.cat}</h2>`;
     g.items.forEach((item, ii) => {
+      totalPack++;
       let k = `def-${gi}-${ii}`;
       let isChecked = packData[k] || false;
+      if(isChecked) donePack++;
       html += `<div class="pack-item ${isChecked ? 'done' : ''}">
         <span>${item}</span>
         <button class="check" onclick="togglePack('${k}')">${isChecked ? '✓ 已準備' : '○ 準備'}</button>
@@ -263,8 +370,10 @@ function renderPack() {
   if(customItems.length) {
     html += `<div class="box"><h2>⭐ 自訂項目</h2>`;
     customItems.forEach((item, ci) => {
+      totalPack++;
       let k = `cust-${ci}`;
       let isChecked = packData[k] || false;
+      if(isChecked) donePack++;
       html += `<div class="pack-item ${isChecked ? 'done' : ''}">
         <span>${item}</span>
         <button class="check" onclick="togglePack('${k}')">${isChecked ? '✓' : '○'}</button>
@@ -273,6 +382,10 @@ function renderPack() {
     html += `</div>`;
   }
   document.getElementById("packList").innerHTML = html;
+  
+  // 更新首頁行李進度
+  document.getElementById("packPtext").textContent = `${donePack} / ${totalPack}`;
+  document.getElementById("packBar").style.width = totalPack ? (donePack / totalPack * 100) + "%" : "0%";
 }
 
 function togglePack(k) {
@@ -361,7 +474,9 @@ function countdown() {
 
 setInterval(countdown, 30000);
 countdown();
-day(1, document.querySelector(".days button"));
+updateNextSpotCard();
+renderTimeline(1);
+renderPack();
 renderPlaces();
 renderMoney();
 progress();
