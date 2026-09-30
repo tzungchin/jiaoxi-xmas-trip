@@ -8,617 +8,139 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="礁溪聖誕">
 <title>礁溪聖誕小旅行</title>
-
-<!-- PWA Manifest 設定 -->
-<link id="dynamicFavicon" rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎄</text></svg>">
+<script type="text/javascript" nonce="b0227a1b753943f4be57107dbe0" src="//local.adguard.org?ts=1790782456075&amp;type=content-script&amp;dmn=chatgpt.com&amp;url=https%3A%2F%2Fchatgpt.com%2Fbackend-api%2Festuary%2Fcontent%3Fid%3Dfile_0000000027a4820688dbd796efa13055%26fn%3Dindex.html%26cd%3Dattachment%26ts%3D497440%26p%3Dfs%26cid%3D1%26sig%3D1354bdb1255635f8b3751cac6f8df258e337f43dc5e8b6ea9d7a57b7582d9343%26v%3D0&amp;app=chrome.exe&amp;css=2&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1&amp;stealth=1&amp;st-dnt"></script><script type="text/javascript" nonce="b0227a1b753943f4be57107dbe0" src="//local.adguard.org?ts=1790782456075&amp;name=AdGuard%20Extra&amp;name=AdGuard%20Popup%20Blocker&amp;type=user-script"></script><link id="dynamicFavicon" rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎄</text></svg>">
 <link id="dynamicAppleIcon" rel="apple-touch-icon" href="">
-<link rel="manifest" href='data:application/manifest+json,{"name":"礁溪聖誕小旅行","short_name":"礁溪聖誕","start_url":".","display":"standalone","background_color":"#fff7ef","theme_color":"#7b2633","icons":[{"src":"data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎄</text></svg>","sizes":"192x192 512x512","type":"image/svg+xml"}]}'>
-
-<!-- 載入 Firebase SDK -->
+<link rel="manifest" href='data:application/manifest+json,{"name":"礁溪聖誕小旅行","short_name":"礁溪聖誕","start_url":".","display":"standalone","background_color":"#fff7ef","theme_color":"#7b2633"}'>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
-<script>
-// 動態生成高相容性 PNG 桌面 Icon
-(function generateDynamicPWAIcon() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 192;
-  canvas.height = 192;
-  const ctx = canvas.getContext('2d');
-
-  ctx.fillStyle = '#7b2633';
-  ctx.beginPath();
-  ctx.roundRect(0, 0, 192, 192, 40);
-  ctx.fill();
-
-  ctx.font = '120px sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('🎄', 96, 104);
-
-  const pngUrl = canvas.toDataURL('image/png');
-  document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById('dynamicAppleIcon').href = pngUrl;
-  });
-})();
-</script>
-
 <style>
 :root{--red:#7b2633;--red2:#a44752;--cream:#fff8f1;--card:#fff;--gold:#c89a45;--gold-light:#fbf4e6;--ink:#302928;--muted:#776d69;--line:#eadfd8}
-*{box-sizing:border-box}
-body{margin:0;background:linear-gradient(#fff7ef,#f7eee9);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:var(--ink)}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(#fff7ef,#f7eee9);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:var(--ink)}
 .app{max-width:620px;margin:auto;min-height:100vh;padding-bottom:80px;padding-top:env(safe-area-inset-top,0px)}
-
-header{padding:32px 20px 28px;color:#fff;background:linear-gradient(145deg,#5e1b25,var(--red),var(--red2));border-radius:0 0 32px 32px;box-shadow:0 10px 30px #5e1b2540;position:relative;overflow:hidden}
-header::after{content:"🎄";position:absolute;right:15px;bottom:-10px;font-size:90px;opacity:.15;pointer-events:none}
-.hero-tag{display:inline-block;padding:4px 12px;background:#ffffff24;backdrop-filter:blur(5px);border:1px solid #ffffff40;border-radius:20px;font-size:11px;letter-spacing:1.5px;font-weight:700}
-.hero-title{font-size:30px;font-weight:900;margin:10px 0 4px;letter-spacing:-0.5px}
-.hero-sub{font-size:13px;opacity:.9;line-height:1.4}
-.hero-pills{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-.pill{padding:6px 12px;border-radius:16px;background:#ffffff18;border:1px solid #ffffff30;font-size:12px;font-weight:600}
-
-nav{position:sticky;top:0;z-index:5;display:flex;padding:9px 6px;gap:4px;background:#fffaf7dd;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-nav button{flex:1;border:0;border-radius:12px;background:transparent;padding:10px 2px;font-size:13px;font-weight:750;color:var(--muted);cursor:pointer;transition:all .2s}
-nav button.active{background:#f0dfe0;color:var(--red)}
-
-main{padding:16px}
-.panel{display:none}
-.panel.active{display:block}
-.box,.itemcard{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;margin-bottom:14px;box-shadow:0 6px 20px #5a3a280c}
-h2{margin:0 0 6px;font-size:19px;display:flex;align-items:center;gap:6px}
-h3{margin:0;font-size:16px}
-.muted{color:var(--muted);font-size:13px;line-height:1.55}
-.desc{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);color:#554c48;font-size:13px;line-height:1.5}
-
-.next-card{background:linear-gradient(135deg,var(--gold-light),#fff);border:2px solid var(--gold);position:relative;overflow:hidden}
-.next-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.next-badge{background:var(--gold);color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:10px}
-.next-title{font-size:22px;font-weight:850;color:var(--ink);margin:4px 0}
-.next-time{font-size:14px;color:var(--red);font-weight:800;margin-bottom:6px}
-.btn-nav-next{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:12px;margin-top:12px;background:var(--red);color:#fff;border:0;border-radius:14px;font-weight:800;font-size:14px;text-decoration:none;box-shadow:0 4px 12px #7b263333;cursor:pointer}
-
-/* 動態天氣卡片 */
-.weather-card{background:linear-gradient(135deg,#eef7ff,#ffffff);border:1px solid #cce3f7;display:flex;align-items:center;justify-content:space-between}
-.weather-main{display:flex;align-items:center;gap:12px}
-.weather-icon{font-size:36px}
-.weather-temp{font-size:24px;font-weight:850;color:#1e4c7a}
-
-.sync-status{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:bold;margin-left:auto}
-.sync-online{background:#e8f5e9;color:#2e7d32}
-.sync-offline{background:#ffebee;color:#c62828}
-
-.count{font-size:26px;font-weight:850;color:var(--red);margin:6px 0}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}
-.stat b{display:block;font-size:17px;color:var(--red);margin:3px 0}
-.barbg{height:8px;background:#eee2dc;border-radius:99px;overflow:hidden;margin-top:8px}
-.bar{height:100%;background:var(--gold);width:0;transition:width .4s}
-
-.days{display:flex;gap:8px;margin-bottom:13px}
-.days button{padding:10px 14px;border:1px solid var(--line);background:#fff;border-radius:14px;font-weight:750;cursor:pointer}
-.days button.sel{background:var(--red);color:#fff}
-
-/* Tag 篩選按鈕樣式 */
-.tag-filters{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-top:10px}
-.tag-filters button{padding:6px 12px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;cursor:pointer}
-.tag-filters button.active{background:var(--red);color:#fff;border-color:var(--red)}
-
-.row{display:grid;grid-template-columns:57px 14px 1fr;gap:8px}
-.time{font-size:12px;font-weight:800;color:var(--red);text-align:right;padding-top:16px}
-.line{position:relative}
-.dot{width:11px;height:11px;border-radius:50%;background:var(--gold);margin-top:18px}
-.line:after{content:"";position:absolute;left:5px;top:28px;bottom:-16px;width:2px;background:#ead8ca}
-.row:last-child .line:after{display:none}
-.itemcard{margin:0;padding:14px}
-.itemcard.done{opacity:.5}
-.top{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.check{border:1px solid var(--line);background:#fff;border-radius:10px;padding:5px 10px;cursor:pointer;font-size:12px;font-weight:700}
-.tag{display:inline-block;margin-top:7px;padding:3px 8px;border-radius:8px;background:#f5e8dd;color:#795544;font-size:11px;font-weight:600}
-.map{display:inline-block;margin-top:10px;padding:8px 12px;background:var(--gold-light);border:1px solid var(--gold);color:var(--ink);border-radius:10px;font-size:12px;font-weight:700;text-decoration:none}
-
-.exp{display:grid;grid-template-columns:1fr 75px 75px 40px;gap:5px;margin-top:8px;align-items:center}
-.exp input,.exp select{min-width:0;padding:8px;border:1px solid var(--line);border-radius:10px;font-size:12px}
-.add{width:100%;margin-top:10px;padding:12px;border:0;border-radius:14px;background:var(--red);color:#fff;font-weight:800;cursor:pointer}
-.note{padding:13px;border-radius:16px;background:#fff5df;border:1px solid #efd9a9;font-size:13px;line-height:1.55}
-
-.pack-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f2e7e0}
-.pack-item:last-child{border-bottom:none}
-.pack-item.done span{text-decoration:line-through;color:var(--muted)}
-.footer{text-align:center;color:var(--muted);font-size:12px;margin:25px 0}
+header{padding:32px 20px 28px;color:#fff;background:linear-gradient(145deg,#5e1b25,var(--red),var(--red2));border-radius:0 0 32px 32px;box-shadow:0 10px 30px #5e1b2540;position:relative;overflow:hidden}header::after{content:"🎄";position:absolute;right:15px;bottom:-10px;font-size:90px;opacity:.15;pointer-events:none}
+.hero-tag{display:inline-block;padding:4px 12px;background:#ffffff24;backdrop-filter:blur(5px);border:1px solid #ffffff40;border-radius:20px;font-size:11px;letter-spacing:1.5px;font-weight:700}.hero-title{font-size:30px;font-weight:900;margin:10px 0 4px;letter-spacing:-.5px}.hero-sub{font-size:13px;opacity:.9;line-height:1.4}.hero-pills{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}.pill{padding:6px 12px;border-radius:16px;background:#ffffff18;border:1px solid #ffffff30;font-size:12px;font-weight:600}
+nav{position:sticky;top:0;z-index:5;display:flex;padding:9px 6px;gap:4px;background:#fffaf7dd;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}nav button{flex:1;border:0;border-radius:12px;background:transparent;padding:10px 2px;font-size:13px;font-weight:750;color:var(--muted);cursor:pointer}nav button.active{background:#f0dfe0;color:var(--red)}
+main{padding:16px}.panel{display:none}.panel.active{display:block}.box,.itemcard{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;margin-bottom:14px;box-shadow:0 6px 20px #5a3a280c}h2{margin:0 0 6px;font-size:19px;display:flex;align-items:center;gap:6px}h3{margin:0;font-size:16px}.muted{color:var(--muted);font-size:13px;line-height:1.55}.desc{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);color:#554c48;font-size:13px;line-height:1.5}
+.next-card{background:linear-gradient(135deg,var(--gold-light),#fff);border:2px solid var(--gold);position:relative;overflow:hidden}.next-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.next-badge{background:var(--gold);color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:10px}.next-title{font-size:22px;font-weight:850;color:var(--ink);margin:4px 0}.next-time{font-size:14px;color:var(--red);font-weight:800;margin-bottom:6px}.btn-nav-next{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:12px;margin-top:12px;background:var(--red);color:#fff;border:0;border-radius:14px;font-weight:800;font-size:14px;text-decoration:none;box-shadow:0 4px 12px #7b263333;cursor:pointer}
+.weather-card{background:linear-gradient(135deg,#eef7ff,#fff);border:1px solid #cce3f7;display:flex;align-items:center;justify-content:space-between}.weather-main{display:flex;align-items:center;gap:12px}.weather-icon{font-size:36px}.weather-temp{font-size:24px;font-weight:850;color:#1e4c7a}.sync-status{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:bold;margin-left:auto}.sync-online{background:#e8f5e9;color:#2e7d32}.sync-offline{background:#ffebee;color:#c62828}
+.count{font-size:26px;font-weight:850;color:var(--red);margin:6px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}.stat b{display:block;font-size:17px;color:var(--red);margin:3px 0}.barbg{height:8px;background:#eee2dc;border-radius:99px;overflow:hidden;margin-top:8px}.bar{height:100%;background:var(--gold);width:0;transition:width .4s}
+.days{display:flex;gap:8px;margin-bottom:13px}.days button{padding:10px 14px;border:1px solid var(--line);background:#fff;border-radius:14px;font-weight:750;cursor:pointer}.days button.sel{background:var(--red);color:#fff}
+.tag-filters{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-top:10px}.tag-filters button{padding:6px 12px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;cursor:pointer}.tag-filters button.active{background:var(--red);color:#fff;border-color:var(--red)}
+.row{display:grid;grid-template-columns:57px 14px 1fr;gap:8px}.time{font-size:12px;font-weight:800;color:var(--red);text-align:right;padding-top:16px}.line{position:relative}.dot{width:11px;height:11px;border-radius:50%;background:var(--gold);margin-top:18px}.line:after{content:"";position:absolute;left:5px;top:28px;bottom:-16px;width:2px;background:#ead8ca}.row:last-child .line:after{display:none}.itemcard{margin:0;padding:14px}.itemcard.done{opacity:.5}.top{display:flex;align-items:center;justify-content:space-between;gap:8px}.check{border:1px solid var(--line);background:#fff;border-radius:10px;padding:5px 10px;cursor:pointer;font-size:12px;font-weight:700}.tag{display:inline-block;margin-top:7px;padding:3px 8px;border-radius:8px;background:#f5e8dd;color:#795544;font-size:11px;font-weight:600}.map{display:inline-block;margin-top:10px;padding:8px 12px;background:var(--gold-light);border:1px solid var(--gold);color:var(--ink);border-radius:10px;font-size:12px;font-weight:700;text-decoration:none}
+.exp{display:grid;grid-template-columns:1fr 75px 75px 40px;gap:5px;margin-top:8px;align-items:center}.exp input,.exp select{min-width:0;padding:8px;border:1px solid var(--line);border-radius:10px;font-size:12px}.add{width:100%;margin-top:10px;padding:12px;border:0;border-radius:14px;background:var(--red);color:#fff;font-weight:800;cursor:pointer}.note{padding:13px;border-radius:16px;background:#fff5df;border:1px solid #efd9a9;font-size:13px;line-height:1.55}.pack-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f2e7e0}.pack-item:last-child{border-bottom:none}.pack-item.done span{text-decoration:line-through;color:var(--muted)}.footer{text-align:center;color:var(--muted);font-size:12px;margin:25px 0}
+.today-card{background:linear-gradient(135deg,#fff,#f8f0e9);border:1px solid var(--line)}.today-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.status-chip{border-radius:14px;padding:10px 8px;text-align:center;border:1px solid var(--line);background:#fff}.status-chip b{display:block;font-size:11px;color:var(--muted);margin-bottom:4px}.status-chip span{display:block;font-size:13px;font-weight:850;color:var(--red);line-height:1.35}.status-chip.active{background:#fff5df;border-color:var(--gold)}.status-chip.next{background:#eef7ff;border-color:#bce0fd}.status-chip.done{background:#f1f1f1;color:var(--muted)}.feature-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.feature-btn{padding:11px 10px;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--ink);font-weight:800;cursor:pointer}.feature-btn.primary{background:var(--red);color:#fff;border-color:var(--red)}.feature-btn.rain{background:#eef7ff;color:#1d5382;border-color:#bce0fd}.feature-btn.rain.active{background:#1d5382;color:#fff;border-color:#1d5382}.random-result{margin-top:10px;padding:12px;border-radius:14px;background:#fff8f1;border:1px dashed var(--gold);display:none}.random-result.show{display:block}.travel-gap{grid-column:3;display:flex;align-items:center;justify-content:center;padding:5px 0;color:#8b6a58;font-size:11px;font-weight:750}.travel-gap span{display:inline-block;padding:3px 7px;background:#fff7ef;border:1px solid #ead8ca;border-radius:10px}
 </style>
 </head>
 <body>
 <div class="app">
-  <header>
-    <div style="display:flex;align-items:center">
-      <div class="hero-tag">CHRISTMAS 2026 · COUPLE TRIP</div>
-      <span id="syncBadge" class="sync-status sync-offline">離線模式</span>
-    </div>
-    <div class="hero-title">🎄 礁溪聖誕小旅行</div>
-    <div class="hero-sub">兩天一夜 · 七堵 ⇄ 礁溪<br>溫泉輕擁 × 聖誕暖宴 × 山海靜美</div>
-    <div class="hero-pills">
-      <div class="pill">📅 12/25 (五) — 12/26 (六)</div>
-      <div class="pill">❤️ 雙人即時同步中</div>
-    </div>
-  </header>
-  
-  <nav>
-    <button class="active" onclick="tab('home',this)">首頁</button>
-    <button onclick="tab('plan',this)">行程</button>
-    <button onclick="tab('places',this)">景點</button>
-    <button onclick="tab('money',this)">分帳</button>
-    <button onclick="tab('pack',this)">行李</button>
-  </nav>
+<header><div style="display:flex;align-items:center"><div class="hero-tag">CHRISTMAS 2026 · COUPLE TRIP</div><span id="syncBadge" class="sync-status sync-offline">離線模式</span></div><div class="hero-title">🎄 礁溪聖誕小旅行</div><div class="hero-sub">兩天一夜 · 七堵 ⇄ 礁溪<br>溫泉輕擁 × 聖誕暖宴 × 山海靜美</div><div class="hero-pills"><div class="pill">📅 12/25 (五) — 12/26 (六)</div><div class="pill">❤️ 雙人即時同步中</div></div></header>
+<nav><button class="active" onclick="tab('home',this)">首頁</button><button onclick="tab('plan',this)">行程</button><button onclick="tab('places',this)">景點</button><button onclick="tab('money',this)">分帳</button><button onclick="tab('pack',this)">行李</button></nav>
+<main>
+<section id="home" class="panel active">
+<div class="box weather-card"><div class="weather-main"><div class="weather-icon" id="wIcon">🌤️</div><div><div style="font-size:12px;color:#537b9d;font-weight:700">📍 宜蘭礁溪實時天氣</div><div class="weather-temp" id="wTemp">--°C</div></div></div><div style="text-align:right"><div style="font-size:12px;color:var(--muted)" id="wDesc">載入中…</div><div style="font-size:12px;font-weight:800;color:#2c6da8;margin-top:2px" id="wRain">🌧️ 降雨率 --%</div></div></div>
+<div id="rainNotice" class="note" style="display:none;margin-bottom:14px;background:#eef7ff;border-color:#bce0fd;color:#1d5382">🌧️ <b>降雨提示</b>：今天礁溪降雨機率較高，戶外步道請備妥雨具，或可彈性調整為「蘭陽博物館/質感咖啡廳」室內行程！</div>
 
-  <main>
-    <section id="home" class="panel active">
-      <!-- 🌦 動態天氣卡片 -->
-      <div class="box weather-card">
-        <div class="weather-main">
-          <div class="weather-icon" id="wIcon">🌤️</div>
-          <div>
-            <div style="font-size:12px;color:#537b9d;font-weight:700">📍 宜蘭礁溪實時天氣</div>
-            <div class="weather-temp" id="wTemp">--°C</div>
-          </div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-size:12px;color:var(--muted)" id="wDesc">載入中…</div>
-          <div style="font-size:12px;font-weight:800;color:#2c6da8;margin-top:2px" id="wRain">🌧️ 降雨率 --%</div>
-        </div>
-      </div>
-      <div id="rainNotice" class="note" style="display:none;margin-bottom:14px;background:#eef7ff;border-color:#bce0fd;color:#1d5382">
-        🌧️ <b>降雨提示</b>：今天礁溪降雨機率較高，戶外步道請備妥雨具，或可彈性調整為「蘭陽博物館/質感咖啡廳」室內行程！
-      </div>
+<div class="box today-card"><div class="top"><div><h2>📅 今日行程</h2><div class="muted" id="todayStatusText">正在判斷今天的行程…</div></div><span class="next-badge" id="todayDayBadge">Day --</span></div><div class="today-grid"><div class="status-chip active"><b>▶ 進行中</b><span id="todayCurrent">—</span></div><div class="status-chip next"><b>→ 下一站</b><span id="todayNext">—</span></div><div class="status-chip done"><b>✓ 已完成</b><span id="todayDone">0 項</span></div></div><div class="feature-actions"><button id="rainToggleBtn" class="feature-btn rain" onclick="toggleRainMode()">🌧️ 一鍵切換雨天行程</button><button class="feature-btn primary" onclick="randomRestaurant()">🎲 隨機選餐廳</button></div><div id="randomResult" class="random-result"></div></div>
 
-      <!-- 🧭 現在要去哪裡 -->
-      <div class="box next-card">
-        <div class="next-header">
-          <span class="next-badge">🧭 現在要去哪裡</span>
-          <div style="font-size:12px;color:var(--muted)">
-            <button onclick="prevNextSpot()" style="border:0;background:none;cursor:pointer">◀</button>
-            <span id="nextIndexText">自動判定</span>
-            <button onclick="nextNextSpot()" style="border:0;background:none;cursor:pointer">▶</button>
-          </div>
-        </div>
-        <div class="next-time" id="nextTime">--:--</div>
-        <div class="next-title" id="nextTitle">正在計算下一個行程…</div>
-        <div class="muted" id="nextDesc">系統將根據目前時間自動為你導引下一站。</div>
-        <a id="nextMapBtn" class="btn-nav-next" target="_blank" href="#">🗺️ 導航到下一站</a>
-      </div>
+<div class="box next-card"><div class="next-header"><span class="next-badge">🧭 現在要去哪裡</span><div style="font-size:12px;color:var(--muted)"><button onclick="prevNextSpot()" style="border:0;background:none;cursor:pointer">◀</button><span id="nextIndexText">自動判定</span><button onclick="nextNextSpot()" style="border:0;background:none;cursor:pointer">▶</button></div></div><div class="next-time" id="nextTime">--:--</div><div class="next-title" id="nextTitle">正在計算下一個行程…</div><div class="muted" id="nextDesc">系統將根據目前時間自動為你導引下一站。</div><a id="nextMapBtn" class="btn-nav-next" target="_blank" href="#">🗺️ 導航到下一站</a></div>
+<div class="box"><h2>❤ 距離出發時間</h2><div id="count" class="count">計算中…</div><div class="muted">2026/12/25 09:53 · 七堵車站開車</div></div>
+<div class="grid"><div class="stat">🚆 去程車次<b>09:53</b><span class="muted">278 自強3000</span></div><div class="stat">🚆 回程車次<b>18:59</b><span class="muted">283 自強3000</span></div><div class="stat">🏨 聖誕住宿<b>東旅湯宿</b><span class="muted">京閣苑 / 16:00 入住</span></div><div class="stat">🎄 聖誕大餐<b>三燔礁溪</b><span class="muted">18:00–20:00 晚宴</span></div></div>
+<div class="box" style="margin-top:14px"><h2>📊 旅行準備與完成進度</h2><div style="margin-top:10px"><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700"><span>🗓️ 行程完成度</span><span id="ptext">0 / 0</span></div><div class="barbg"><div id="bar" class="bar"></div></div></div><div style="margin-top:14px"><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700"><span>🧳 行李打包進度</span><span id="packPtext">0 / 0</span></div><div class="barbg"><div id="packBar" class="bar" style="background:var(--red)"></div></div></div></div>
+</section>
 
-      <div class="box">
-        <h2>❤ 距離出發時間</h2>
-        <div id="count" class="count">計算中…</div>
-        <div class="muted">2026/12/25 09:53 · 七堵車站開車</div>
-      </div>
-
-      <div class="grid">
-        <div class="stat">🚆 去程車次<b>09:53</b><span class="muted">278 自強3000</span></div>
-        <div class="stat">🚆 回程車次<b>18:59</b><span class="muted">283 自強3000</span></div>
-        <div class="stat">🏨 聖誕住宿<b>東旅湯宿</b><span class="muted">京閣苑 / 16:00 入住</span></div>
-        <div class="stat">🎄 聖誕大餐<b>三燔礁溪</b><span class="muted">18:00–20:00 晚宴</span></div>
-      </div>
-
-      <div class="box" style="margin-top:14px">
-        <h2>📊 旅行準備與完成進度</h2>
-        <div style="margin-top:10px">
-          <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700">
-            <span>🗓️ 行程完成度</span><span id="ptext">0 / 0</span>
-          </div>
-          <div class="barbg"><div id="bar" class="bar"></div></div>
-        </div>
-        <div style="margin-top:14px">
-          <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700">
-            <span>🧳 行李打包進度</span><span id="packPtext">0 / 0</span>
-          </div>
-          <div class="barbg"><div id="packBar" class="bar" style="background:var(--red)"></div></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="plan" class="panel">
-      <div class="days">
-        <button class="sel" onclick="day(1,this)">12/25 · Day 1</button>
-        <button onclick="day(2,this)">12/26 · Day 2</button>
-      </div>
-      <div id="timeline"></div>
-    </section>
-
-    <section id="places" class="panel">
-      <div class="box">
-        <h2>📍 景點與美食導航</h2>
-        <div class="muted">點擊 Tag 可快速分類篩選景點或美食。</div>
-        <div class="tag-filters" id="tagFilters">
-          <button class="active" onclick="filterPlaces('ALL', this)">全部</button>
-          <button onclick="filterPlaces('景點', this)">景點</button>
-          <button onclick="filterPlaces('美食', this)">美食</button>
-          <button onclick="filterPlaces('購物', this)">購物</button>
-          <button onclick="filterPlaces('住宿', this)">住宿</button>
-          <button onclick="filterPlaces('夜遊', this)">夜遊</button>
-        </div>
-      </div>
-      <div id="placesList"></div>
-    </section>
-
-    <section id="money" class="panel">
-      <div class="box">
-        <h2>💰 旅費與平分計算機</h2>
-        <div class="grid">
-          <div class="stat">總花費<b id="total">NT$0</b></div>
-          <div class="stat">每人應負擔<b id="per">NT$0</b></div>
-        </div>
-        <div id="settleBox" class="note" style="margin-top:10px;background:#eef6f2;border-color:#b8dc8e;color:#1e4d3b;font-weight:bold">
-          結算計算中…
-        </div>
-        <div id="expenses"></div>
-        <button class="add" onclick="addExp()">＋ 新增花費</button>
-      </div>
-    </section>
-
-    <section id="pack" class="panel">
-      <div class="box">
-        <h2>🧳 雙人行李打包清單</h2>
-        <div class="muted">勾選項目會即時同步給對方！</div>
-      </div>
-      <div id="packList"></div>
-      <div class="box">
-        <h3>＋ 新增自訂物品</h3>
-        <div style="display:flex;gap:8px;margin-top:8px">
-          <input id="newPack" placeholder="例如：拍立得底片" style="flex:1;padding:10px;border:1px solid var(--line);border-radius:10px">
-          <button onclick="addPackItem()" style="padding:10px 15px;background:var(--red);color:#fff;border:0;border-radius:10px;font-weight:bold">新增</button>
-        </div>
-      </div>
-    </section>
-
-    <div class="footer">🎁 願這個聖誕節，留下屬於你們的回憶。</div>
-  </main>
-</div>
+<section id="plan" class="panel"><div class="days"><button class="sel" onclick="day(1,this)">12/25 · Day 1</button><button onclick="day(2,this)">12/26 · Day 2</button></div><div id="timeline"></div></section>
+<section id="places" class="panel"><div class="box"><h2>📍 景點與美食導航</h2><div class="muted">點擊 Tag 可快速分類篩選景點或美食。</div><div class="tag-filters" id="tagFilters"><button class="active" onclick="filterPlaces('ALL', this)">全部</button><button onclick="filterPlaces('景點', this)">景點</button><button onclick="filterPlaces('美食', this)">美食</button><button onclick="filterPlaces('購物', this)">購物</button><button onclick="filterPlaces('住宿', this)">住宿</button><button onclick="filterPlaces('夜遊', this)">夜遊</button></div></div><div id="placesList"></div></section>
+<section id="money" class="panel"><div class="box"><h2>💰 旅費與平分計算機</h2><div class="grid"><div class="stat">總花費<b id="total">NT$0</b></div><div class="stat">每人應負擔<b id="per">NT$0</b></div></div><div id="settleBox" class="note" style="margin-top:10px;background:#eef6f2;border-color:#b8dc8e;color:#1e4d3b;font-weight:bold">結算計算中…</div><div id="expenses"></div><button class="add" onclick="addExp()">＋ 新增花費</button></div></section>
+<section id="pack" class="panel"><div class="box"><h2>🧳 雙人行李打包清單</h2><div class="muted">勾選項目會即時同步給對方！</div></div><div id="packList"></div><div class="box"><h3>＋ 新增自訂物品</h3><div style="display:flex;gap:8px;margin-top:8px"><input id="newPack" placeholder="例如：拍立得底片" style="flex:1;padding:10px;border:1px solid var(--line);border-radius:10px"><button onclick="addPackItem()" style="padding:10px 15px;background:var(--red);color:#fff;border:0;border-radius:10px;font-weight:bold">新增</button></div></div></section>
+<div class="footer">🎁 願這個聖誕節，留下屬於你們的回憶。</div>
+</main></div>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyDVIhnsQO6EZFabulOwTvD8X56FPLkB0TA",
-  authDomain: "jiaoxi-trip-b9d86.firebaseapp.com",
-  databaseURL: "https://jiaoxi-trip-b9d86-default-rtdb.firebaseio.com",
-  projectId: "jiaoxi-trip-b9d86",
-  storageBucket: "jiaoxi-trip-b9d86.firebasestorage.app",
-  messagingSenderId: "80737502666",
-  appId: "1:80737502666:web:a2d2ee8eb4a59ebb6c3b33",
-  measurementId: "G-XLB4DNT675"
-};
+const firebaseConfig={apiKey:"AIzaSyDVIhnsQO6EZFabulOwTvD8X56FPLkB0TA",authDomain:"jiaoxi-trip-b9d86.firebaseapp.com",databaseURL:"https://jiaoxi-trip-b9d86-default-rtdb.firebaseio.com",projectId:"jiaoxi-trip-b9d86",storageBucket:"jiaoxi-trip-b9d86.firebasestorage.app",messagingSenderId:"80737502666",appId:"1:80737502666:web:a2d2ee8eb4a59ebb6c3b33"};
+let db=null;try{firebase.initializeApp(firebaseConfig);db=firebase.database();document.getElementById("syncBadge").textContent="🟢 即時同步中";document.getElementById("syncBadge").className="sync-status sync-online"}catch(e){}
+const fullSchedule=[
+{day:1,time:"09:53",datetime:"2026-12-25T09:53:00+08:00",title:"🚆 七堵出發",desc:"278 次自強3000｜開啟聖誕小旅行",tag:"交通",spot:"七堵車站"},
+{day:1,time:"10:42",datetime:"2026-12-25T10:42:00+08:00",title:"📍 抵達礁溪",desc:"抵達礁溪車站，準備取車或寄放行李",tag:"交通",spot:"礁溪火車站"},
+{day:1,time:"11:20",datetime:"2026-12-25T11:20:00+08:00",title:"🍜 礁溪午餐：玉仁八寶冬粉",desc:"品嚐百大名店八寶冬粉與特色小菜",tag:"美食",spot:"玉仁八寶冬粉"},
+{day:1,time:"13:00",datetime:"2026-12-25T13:00:00+08:00",title:"🌿 林美石磐 / 五峰旗",desc:"漫步低難度溪谷步道，吸收負離子",tag:"景點",spot:"林美石磐步道"},
+{day:1,time:"15:00",datetime:"2026-12-25T15:00:00+08:00",title:"☕ 情侶咖啡約會",desc:"選間質感咖啡廳，聊天休息拍照",tag:"約會",spot:"礁溪咖啡廳"},
+{day:1,time:"16:00",datetime:"2026-12-25T16:00:00+08:00",title:"🏨 入住東旅湯宿京閣苑",desc:"Check-in 辦理入住，感受濃濃日式風情",tag:"住宿",spot:"東旅湯宿京閣苑"},
+{day:1,time:"16:30",datetime:"2026-12-25T16:30:00+08:00",title:"♨️ 房內泡湯＆休息",desc:"享受客房獨立湯屋，舒緩身心",tag:"放鬆",spot:"東旅湯宿京閣苑"},
+{day:1,time:"18:00",datetime:"2026-12-25T18:00:00+08:00",title:"🎄 聖誕晚餐：三燔礁溪",desc:"享用高質感壽喜燒/涮涮鍋放題與哈根達斯",tag:"美食",spot:"三燔礁溪"},
+{day:1,time:"20:00",datetime:"2026-12-25T20:00:00+08:00",title:"🌙 礁溪夜間散步",desc:"湯圍溝溫泉公園散步、欣賞聖誕燈飾",tag:"約會",spot:"湯圍溝溫泉公園"},
+{day:1,time:"21:00",datetime:"2026-12-25T21:00:00+08:00",title:"❤️ 回飯店泡湯",desc:"第二次泡湯放鬆 ＋ 交換聖誕小禮物",tag:"兩人時間",spot:"東旅湯宿京閣苑"},
+{day:2,time:"08:30",datetime:"2026-12-26T08:30:00+08:00",title:"☀️ 飯店早餐",desc:"享用精緻早餐，享受悠閒晨光",tag:"住宿",spot:"東旅湯宿京閣苑"},
+{day:2,time:"10:00",datetime:"2026-12-26T10:00:00+08:00",title:"🏨 Check-out",desc:"辦理退房，整理行李準備出發",tag:"住宿",spot:"東旅湯宿京閣苑"},
+{day:2,time:"10:30",datetime:"2026-12-26T10:30:00+08:00",title:"🏛 蘭陽博物館",desc:"欣賞單面山建築美學與宜蘭文化展覽",tag:"景點",spot:"蘭陽博物館"},
+{day:2,time:"12:00",datetime:"2026-12-26T12:00:00+08:00",title:"🍜 頭城午餐：老街美食",desc:"品嚐品誼古早味小吃或阿茂麵攤",tag:"美食",spot:"頭城老街"},
+{day:2,time:"13:30",datetime:"2026-12-26T13:30:00+08:00",title:"🌊 外澳看海",desc:"外澳沙灘散步、遠眺龜山島海景",tag:"景點",spot:"外澳沙灘"},
+{day:2,time:"15:00",datetime:"2026-12-26T15:00:00+08:00",title:"☕ 海景咖啡",desc:"坐在海景第一排咖啡廳享受最後時光",tag:"約會",spot:"外澳海景咖啡"},
+{day:2,time:"16:00",datetime:"2026-12-26T16:00:00+08:00",title:"🚗 回礁溪",desc:"慢慢開車/搭車返回礁溪市區",tag:"交通",spot:"礁溪車站"},
+{day:2,time:"16:30",datetime:"2026-12-26T16:30:00+08:00",title:"🛍 買伴手禮",desc:"挑選奕順軒麵包/奶凍捲等在地名產",tag:"購物",spot:"奕順軒礁溪店"},
+{day:2,time:"17:00",datetime:"2026-12-26T17:00:00+08:00",title:"🚗 還車 / 準備搭車",desc:"完成還車手續，前往礁溪車站",tag:"交通",spot:"礁溪火車站"},
+{day:2,time:"18:59",datetime:"2026-12-26T18:59:00+08:00",title:"🚆 礁溪出發",desc:"283 次自強3000｜帶著美好回憶返回七堵",tag:"交通",spot:"礁溪火車站"}];
+const defaultPack=[{cat:"♨️ 泡湯必備",items:["泳衣 / 泳帽","保濕保養品 / 面膜","身體乳液"]},{cat:"🎄 聖誕約會",items:["聖誕交換禮物","拍立得 / 相機","好看的約會穿搭"]},{cat:"🪪 證件交通",items:["雙方身分證件","汽車駕照","火車票取碼 / 悠遊卡"]},{cat:"☂ 隨身物品",items:["雨具 / 折傘","行動電源 & 充電線","個人常備藥品"]}];
+const places=[{name:"玉仁八寶冬粉",tag:"美食",desc:"Day 1 午餐推薦：台灣百大名店，配料豐富湯頭鮮甜。"},
+{name:"品誼古早味小吃",tag:"美食",desc:"Day 2 午餐推薦：頭城老街古早味小吃。"},
+{name:"阿茂麵攤",tag:"美食",desc:"Day 2 午餐備案：在地老店，主打麻醬麵與黑白切。"},
+{name:"陳旺記鴨片飯",tag:"美食",desc:"礁溪平價人氣美食，招牌鴨片飯。"},
+{name:"山友拉麵",tag:"美食",desc:"礁溪熱門日式拉麵。"},
+{name:"珈琲方島",tag:"美食",desc:"礁溪質感獨立咖啡店，適合下午約會。"},
+{name:"襄聚牛排",tag:"美食",desc:"在地平價台式排餐。"},
+{name:"正常鮮肉小籠湯包",tag:"美食",desc:"礁溪熱門爆汁湯包。"},
+{name:"正好鮮肉小籠包",tag:"美食",desc:"皮薄餡多湯汁豐富。"},
+{name:"合鴨米灶腳",tag:"美食",desc:"特色鴨米飯與鴨肉料理。"},
+{name:"吉祥鮮肉小籠包",tag:"美食",desc:"頭城人氣湯包。"},
+{name:"阿宗芋冰城 / 聯發芋冰老店",tag:"美食",desc:"頭城傳統古早味芋冰。"},
+{name:"三燔礁溪",tag:"美食",desc:"聖誕大餐：高質感壽喜燒/涮涮鍋。"},
+{name:"滿山望海",tag:"美食",desc:"頭城海景咖啡，遠眺龜山島。"},
+{name:"空ㄟ農場",tag:"夜遊",desc:"礁溪夜景景觀餐廳。"},
+{name:"奕順軒 (礁溪店)",tag:"購物",desc:"宜蘭伴手禮名店，奶凍捲等。"},
+{name:"慕嶼商行",tag:"購物",desc:"宜蘭質感文創選物店。"},
+{name:"東旅湯宿京閣苑",tag:"住宿",desc:"日式風情溫泉住宿。"},
+{name:"跑馬古道公園",tag:"景點",desc:"綠意寬廣的休閒公園。"},
+{name:"甲鳥園",tag:"景點",desc:"生態鴨園體驗。"},
+{name:"林美石磐步道",tag:"景點",desc:"低難度溪谷步道。"},
+{name:"五峰旗瀑布",tag:"景點",desc:"礁溪知名瀑布地標。"},
+{name:"蘭陽博物館",tag:"景點",desc:"宜蘭文化展覽與特色建築。"},
+{name:"外澳海灘",tag:"景點",desc:"遠眺龜山島的海灘。"},
+{name:"湯圍溝溫泉公園",tag:"夜遊",desc:"礁溪市區核心溫泉公園。"}];
 
-let db = null;
-try {
-  firebase.initializeApp(firebaseConfig);
-  db = firebase.database();
-  document.getElementById("syncBadge").textContent = "🟢 即時同步中";
-  document.getElementById("syncBadge").className = "sync-status sync-online";
-} catch(e) {
-  console.log("Firebase 初始化異常", e);
+let done={},exps=[],packData={},curDay=1,manualNextIndex=-1,selectedTag="ALL",rainMode=false;
+const rainOverrides={3:{title:"🏛 蘭陽博物館（雨天）",desc:"把戶外步道改成室內文化行程，舒服逛展覽、拍建築",tag:"雨天",spot:"蘭陽博物館"},4:{title:"☕ 情侶咖啡約會（雨天）",desc:"提早進入質感咖啡廳，聊天、拍照、等雨勢",tag:"雨天",spot:"礁溪咖啡廳"},13:{title:"☕ 頭城室內咖啡／老街散步（雨天）",desc:"視雨勢調整，改成室內咖啡或頭城老街短暫走走",tag:"雨天",spot:"頭城老街"},14:{title:"♨️ 提早回礁溪泡湯（雨天）",desc:"不追海景，提早回飯店享受溫泉",tag:"雨天",spot:"東旅湯宿京閣苑"}};
+function displayScheduleItem(i){return rainMode&&rainOverrides[i]?Object.assign({},fullSchedule[i],rainOverrides[i]):fullSchedule[i]}
+function syncToDb(){if(db)db.ref("tripData").set({done,exps,packData})}
+if(db)db.ref("tripData").on("value",s=>{let v=s.val()||{};done=v.done||{};exps=v.exps||[];packData=v.packData||{};renderTimeline(curDay);renderPack();renderMoney()});
+
+function updateTodayStatus(){
+ const now=new Date(),start=new Date("2026-12-25T09:53:00+08:00"),end=new Date("2026-12-26T18:59:00+08:00");
+ const d=now<new Date("2026-12-26T00:00:00+08:00")?1:2,idx=fullSchedule.map((s,i)=>i).filter(i=>fullSchedule[i].day===d);
+ let cur=-1,next=-1;idx.forEach(i=>{let t=new Date(fullSchedule[i].datetime);if(t<=now)cur=i;else if(next<0)next=i});
+ let current="尚未開始",nextText=idx.length?displayScheduleItem(idx[0]).title:"—",status="Day "+d+" · 行程預覽";
+ if(now>=start&&now<=end){current=cur>=0?displayScheduleItem(cur).title:"尚未開始";nextText=next>=0?displayScheduleItem(next).title:"旅程即將結束 ❤️";status=rainMode?"🌧️ 雨天模式 · 正在進行":"☀️ 正在進行今日行程"}
+ else if(now>end){current="旅程已完成 ❤️";nextText="—";status="🎄 這趟聖誕小旅行已完成"}
+ document.getElementById("todayDayBadge").textContent="Day "+d;document.getElementById("todayStatusText").textContent=status;document.getElementById("todayCurrent").textContent=current;document.getElementById("todayNext").textContent=nextText;document.getElementById("todayDone").textContent=idx.filter(i=>done[i]).length+" 項";
 }
+function toggleRainMode(){rainMode=!rainMode;let b=document.getElementById("rainToggleBtn");b.classList.toggle("active",rainMode);b.textContent=rainMode?"☀️ 切回原訂行程":"🌧️ 一鍵切換雨天行程";updateTodayStatus();updateNextSpotCard();renderTimeline(curDay)}
+function randomRestaurant(){let r=places.filter(p=>p.tag==="美食");if(!r.length)return;let p=r[Math.floor(Math.random()*r.length)],e=document.getElementById("randomResult");e.innerHTML='<h3>🎲 今天吃這家：'+p.name+'</h3><div class="muted">'+p.desc+'</div><a class="map" target="_blank" href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.name)+'">🗺️ 導航去吃</a>';e.classList.add("show")}
 
-const fullSchedule = [
-  { day:1, time:"09:53", datetime:"2026-12-25T09:53:00", title:"🚆 七堵出發", desc:"278 次自強3000｜開啟聖誕小旅行", tag:"交通", spot:"七堵車站" },
-  { day:1, time:"10:42", datetime:"2026-12-25T10:42:00", title:"📍 抵達礁溪", desc:"抵達礁溪車站，準備取車或寄放行李", tag:"交通", spot:"礁溪火車站" },
-  { day:1, time:"11:20", datetime:"2026-12-25T11:20:00", title:"🍜 礁溪午餐：玉仁八寶冬粉", desc:"品嚐百大名店八寶冬粉與特色小菜", tag:"美食", spot:"玉仁八寶冬粉" },
-  { day:1, time:"13:00", datetime:"2026-12-25T13:00:00", title:"🌿 林美石磐 / 五峰旗", desc:"漫步低難度溪谷步道，吸收負離子", tag:"景點", spot:"林美石磐步道" },
-  { day:1, time:"15:00", datetime:"2026-12-25T15:00:00", title:"☕ 情侶咖啡約會", desc:"選間質感咖啡廳，聊天休息拍照", tag:"約會", spot:"礁溪咖啡廳" },
-  { day:1, time:"16:00", datetime:"2026-12-25T16:00:00", title:"🏨 入住東旅湯宿京閣苑", desc:"Check-in 辦理入住，感受濃濃日式風情", tag:"住宿", spot:"東旅湯宿京閣苑" },
-  { day:1, time:"16:30", datetime:"2026-12-25T16:30:00", title:"♨️ 房內泡湯＆休息", desc:"享受客房獨立湯屋，舒緩身心", tag:"放鬆", spot:"東旅湯宿京閣苑" },
-  { day:1, time:"18:00", datetime:"2026-12-25T18:00:00", title:"🎄 聖誕晚餐：三燔礁溪", desc:"享用高質感壽喜燒/涮涮鍋放題與哈根達斯", tag:"美食", spot:"三燔礁溪" },
-  { day:1, time:"20:00", datetime:"2026-12-25T20:00:00", title:"🌙 礁溪夜間散步", desc:"湯圍溝溫泉公園散步、欣賞聖誕燈飾", tag:"約會", spot:"湯圍溝溫泉公園" },
-  { day:1, time:"21:00", datetime:"2026-12-25T21:00:00", title:"❤️ 回飯店泡湯", desc:"第二次泡湯放鬆 ＋ 交換聖誕小禮物", tag:"兩人時間", spot:"東旅湯宿京閣苑" },
-  { day:2, time:"08:30", datetime:"2026-12-26T08:30:00", title:"☀️ 飯店早餐", desc:"享用精緻早餐，享受悠閒晨光", tag:"住宿", spot:"東旅湯宿京閣苑" },
-  { day:2, time:"10:00", datetime:"2026-12-26T10:00:00", title:"🏨 Check-out", desc:"辦理退房，整理行李準備出發", tag:"住宿", spot:"東旅湯宿京閣苑" },
-  { day:2, time:"10:30", datetime:"2026-12-26T10:30:00", title:"🏛 蘭陽博物館", desc:"欣賞單面山建築美學與宜蘭文化展覽", tag:"景點", spot:"蘭陽博物館" },
-  { day:2, time:"12:00", datetime:"2026-12-26T12:00:00", title:"🍜 頭城午餐：老街美食", desc:"品嚐品誼古早味小吃或阿茂麵攤", tag:"美食", spot:"頭城老街" },
-  { day:2, time:"13:30", datetime:"2026-12-26T13:30:00", title:"🌊 外澳看海", desc:"外澳沙灘散步、遠眺龜山島海景", tag:"景點", spot:"外澳沙灘" },
-  { day:2, time:"15:00", datetime:"2026-12-26T15:00:00", title:"☕ 海景咖啡", desc:"坐在海景第一排咖啡廳享受最後時光", tag:"約會", spot:"外澳海景咖啡" },
-  { day:2, time:"16:00", datetime:"2026-12-26T16:00:00", title:"🚗 回礁溪", desc:"慢慢開車/搭車返回礁溪市區", tag:"交通", spot:"礁溪車站" },
-  { day:2, time:"16:30", datetime:"2026-12-26T16:30:00", title:"🛍 買伴手禮", desc:"挑選奕順軒麵包/奶凍捲等在地名產", tag:"購物", spot:"奕順軒礁溪店" },
-  { day:2, time:"17:00", datetime:"2026-12-26T17:00:00", title:"🚗 還車 / 準備搭車", desc:"完成還車手續，前往礁溪車站", tag:"交通", spot:"礁溪火車站" },
-  { day:2, time:"18:59", datetime:"2026-12-26T18:59:00", title:"🚆 礁溪出發", desc:"283 次自強3000｜帶著美好回憶返回七堵", tag:"交通", spot:"礁溪火車站" }
-];
-
-const defaultPack = [
-  { cat: "♨️ 泡湯必備", items: ["泳衣 / 泳帽", "保濕保養品 / 面膜", "身體乳液"] },
-  { cat: "🎄 聖誕約會", items: ["聖誕交換禮物", "拍立得 / 相機", "好看的約會穿搭"] },
-  { cat: "🪪 證件交通", items: ["雙方身分證件", "汽車駕照", "火車票取碼 / 悠遊卡"] },
-  { cat: "☂ 隨身物品", items: ["雨具 / 折傘", "行動電源 & 充電線", "個人常備藥品"] }
-];
-
-const places = [
-  { name: "玉仁八寶冬粉", tag: "美食", desc: "Day 1 午餐推薦：台灣百大名店，配料豐富湯頭鮮甜，小菜種類極多。" },
-  { name: "品誼古早味小吃", tag: "美食", desc: "Day 2 午餐推薦：頭城老街傳承三代，必吃古早味米粉羹、炸春捲與蘿蔔糕。" },
-  { name: "阿茂麵攤", tag: "美食", desc: "Day 2 午餐備案：50 年在地老店，主打麻醬麵與古早味黑白切。" },
-  { name: "陳旺記鴨片飯", tag: "美食", desc: "口袋名單：礁溪平價超人氣排隊美食，招牌鴨片飯肉質嫩多汁、當歸羊肉湯濃郁。" },
-  { name: "山友拉麵", tag: "美食", desc: "口袋名單：礁溪熱門日式拉麵店，濃郁豚骨湯頭與滿滿三星蔥韭香。" },
-  { name: "珈琲方島", tag: "美食", desc: "口袋名單：礁溪極具質感的獨立咖啡店，適合下午悠閒約會。" },
-  { name: "襄聚牛排", tag: "美食", desc: "口袋名單：在地平價高CP值台式排餐，肉質軟嫩多汁。" },
-  { name: "正常鮮肉小籠湯包", tag: "美食", desc: "口袋名單：礁溪熱門爆汁湯包，三星蔥香滿溢。" },
-  { name: "正好鮮肉小籠包", tag: "美食", desc: "口袋名單：皮薄餡多湯汁超豐富的名店湯包。" },
-  { name: "合鴨米灶腳", tag: "美食", desc: "口袋名單：無農藥鴨米飯與特色鴨肉料理，溫馨有古早味。" },
-  { name: "吉祥鮮肉小籠包", tag: "美食", desc: "口袋名單：頭城人氣湯包，500碗認證名店。" },
-  { name: "阿宗芋冰城 / 聯發芋冰老店", tag: "美食", desc: "口袋名單：傳統叭噗冰，頭城看海必吃古早味甜點。" },
-  { name: "三燔礁溪", tag: "美食", desc: "聖誕大餐：晶泉豐旅旗下精緻餐廳，主打高質感壽喜燒放題與哈根達斯。" },
-  { name: "滿山望海", tag: "美食", desc: "口袋名單：頭城海景第一排夢幻景觀咖啡廳，遠眺龜山島無敵海景。" },
-  { name: "空ㄟ農場", tag: "夜遊", desc: "口袋名單：礁溪極致百萬夜景景觀餐廳，窯烤披薩美味、氣氛滿分。" },
-  { name: "奕順軒 (礁溪店)", tag: "購物", desc: "口袋名單：宜蘭必買伴手禮名店，招牌奶凍捲、鹹蔥麵包與切片蛋糕。" },
-  { name: "慕嶼商行", tag: "購物", desc: "口袋名單：宜蘭質感文創選物店，販售手作藝品、特色紀念品。" },
-  { name: "東旅湯宿京閣苑", tag: "住宿", desc: "濃濃日式風情溫泉飯店，全館提供客房獨立泡湯池，並備有免費下午茶與自助早餐。" },
-  { name: "跑馬古道公園", tag: "景點", desc: "口袋名單：前身為陸軍明德營區，園區寬廣綠意盎然，夜晚有常態性光影燈光秀。" },
-  { name: "甲鳥園", tag: "景點", desc: "口袋名單：由傳統鴨寮轉型的清水模生態鴨舍，可體驗餵鴨鴨與品嚐美味鴨蛋甜點。" },
-  { name: "林美石磐步道", tag: "景點", desc: "譽為宜蘭小太魯閣，沿途有清澈溪流與瀑布，全程平緩好走，非常適合情侶散步。" },
-  { name: "五峰旗瀑布", tag: "景點", desc: "礁溪知名地標，共有三層瀑布，山林幽靜且充滿負離子與芬多精。" },
-  { name: "蘭陽博物館", tag: "景點", desc: "融入單面山地景的幾何建築，展覽豐富且好拍照，也是雨天備案的首選。" },
-  { name: "外澳海灘", tag: "景點", desc: "擁有平坦黑沙灘，能直接遠眺龜山島雄姿，聽海浪聲散步超級浪漫。" },
-  { name: "湯圍溝溫泉公園", tag: "夜遊", desc: "市區核心溫泉公園，設有免費足湯，夜晚點燈後極具氛圍，周邊小吃林立。" }
-];
-
-let done = {}, exps = [], packData = {}, curDay = 1, manualNextIndex = -1, selectedTag = 'ALL';
-
-if (db) {
-  db.ref("tripData").on("value", (snapshot) => {
-    let val = snapshot.val() || {};
-    done = val.done || {};
-    exps = val.exps || [];
-    packData = val.packData || {};
-    renderTimeline(curDay);
-    renderPack();
-    renderMoney();
-  });
-}
-
-function syncToDb() {
-  if (db) {
-    db.ref("tripData").set({ done, exps, packData });
-  }
-}
-
-async function fetchWeather() {
-  try {
-    let res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=24.8258&longitude=121.7709&current=temperature_2m,relative_humidity_2m,precipitation,weather_code&hourly=precipitation_probability&forecast_days=1&timezone=Asia%2FTaipei");
-    let data = await res.json();
-    
-    let temp = Math.round(data.current.temperature_2m);
-    let code = data.current.weather_code;
-    let rainProb = data.hourly.precipitation_probability[new Date().getHours()] || 0;
-    
-    document.getElementById("wTemp").textContent = `${temp}°C`;
-    document.getElementById("wRain").textContent = `🌧️ 降雨率 ${rainProb}%`;
-    
-    let icon = "🌤️", desc = "多雲時晴";
-    if (code === 0) { icon = "☀️"; desc = "晴朗舒適"; }
-    else if (code >= 1 && code <= 3) { icon = "🌤️"; desc = "多雲局部晴"; }
-    else if (code >= 51) { icon = "🌧️"; desc = "有短暫陣雨"; }
-    
-    document.getElementById("wIcon").textContent = icon;
-    document.getElementById("wDesc").textContent = desc;
-
-    if (rainProb >= 40) {
-      document.getElementById("rainNotice").style.display = "block";
-    }
-  } catch(e) {
-    document.getElementById("wDesc").textContent = "天氣獲取失敗";
-  }
-}
-
-function tab(id, b) {
-  document.querySelectorAll(".panel").forEach(x => x.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  document.querySelectorAll("nav button").forEach(x => x.classList.remove("active"));
-  b.classList.add("active");
-  if(id === "plan") renderTimeline(curDay);
-  if(id === "pack") renderPack();
-  if(id === "places") renderPlaces();
-  if(id === "money") renderMoney();
-}
-
-function updateNextSpotCard() {
-  let now = new Date();
-  let targetIdx = 0;
-
-  if (manualNextIndex !== -1) {
-    targetIdx = manualNextIndex;
-  } else {
-    let found = fullSchedule.findIndex(s => new Date(s.datetime) > now);
-    targetIdx = found !== -1 ? found : 0;
-  }
-
-  let spot = fullSchedule[targetIdx];
-  document.getElementById("nextTime").textContent = `Day ${spot.day} · ${spot.time}`;
-  document.getElementById("nextTitle").textContent = spot.title;
-  document.getElementById("nextDesc").textContent = spot.desc;
-  document.getElementById("nextMapBtn").href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.spot || spot.title)}`;
-  document.getElementById("nextIndexText").textContent = manualNextIndex === -1 ? "自動判斷" : `${targetIdx + 1}/${fullSchedule.length}`;
-}
-
-function prevNextSpot() {
-  manualNextIndex = manualNextIndex === -1 ? 0 : (manualNextIndex - 1 + fullSchedule.length) % fullSchedule.length;
-  updateNextSpotCard();
-}
-
-function nextNextSpot() {
-  manualNextIndex = manualNextIndex === -1 ? 0 : (manualNextIndex + 1) % fullSchedule.length;
-  updateNextSpotCard();
-}
-
-function day(d, b) {
-  curDay = d;
-  document.querySelectorAll(".days button").forEach(x => x.classList.remove("sel"));
-  b.classList.add("sel");
-  renderTimeline(d);
-}
-
-function renderTimeline(d) {
-  let dayList = fullSchedule.filter(s => s.day === d);
-  document.getElementById("timeline").innerHTML = dayList.map((x) => {
-    let globalIdx = fullSchedule.findIndex(s => s === x);
-    let k = globalIdx;
-    return `<div class="row">
-      <div class="time">${x.time}</div>
-      <div class="line"><div class="dot"></div></div>
-      <div class="itemcard ${done[k] ? 'done' : ''}">
-        <div class="top">
-          <h3>${x.title}</h3>
-          <button class="check" onclick="toggle('${k}')">${done[k] ? '✓ 已完成' : '○ 打勾'}</button>
-        </div>
-        <div class="muted">${x.desc}</div>
-        <span class="tag">${x.tag}</span>
-      </div>
-    </div>`;
-  }).join("");
-  progress();
-}
-
-function toggle(k) {
-  done[k] = !done[k];
-  syncToDb();
-  renderTimeline(curDay);
-}
-
-function progress() {
-  let n = fullSchedule.length, d = Object.values(done).filter(Boolean).length;
-  document.getElementById("ptext").textContent = `${d} / ${n}`;
-  document.getElementById("bar").style.width = (d / n * 100) + "%";
-}
-
-function renderPack() {
-  let html = "", totalPack = 0, donePack = 0;
-  defaultPack.forEach((g, gi) => {
-    html += `<div class="box"><h2>${g.cat}</h2>`;
-    g.items.forEach((item, ii) => {
-      totalPack++;
-      let k = `def-${gi}-${ii}`;
-      let isChecked = packData[k] || false;
-      if(isChecked) donePack++;
-      html += `<div class="pack-item ${isChecked ? 'done' : ''}">
-        <span>${item}</span>
-        <button class="check" onclick="togglePack('${k}')">${isChecked ? '✓ 已準備' : '○ 準備'}</button>
-      </div>`;
-    });
-    html += `</div>`;
-  });
-  
-  let customItems = packData["custom"] || [];
-  if(customItems.length) {
-    html += `<div class="box"><h2>⭐ 自訂項目</h2>`;
-    customItems.forEach((item, ci) => {
-      totalPack++;
-      let k = `cust-${ci}`;
-      let isChecked = packData[k] || false;
-      if(isChecked) donePack++;
-      html += `<div class="pack-item ${isChecked ? 'done' : ''}">
-        <span>${item}</span>
-        <button class="check" onclick="togglePack('${k}')">${isChecked ? '✓' : '○'}</button>
-      </div>`;
-    });
-    html += `</div>`;
-  }
-  document.getElementById("packList").innerHTML = html;
-  document.getElementById("packPtext").textContent = `${donePack} / ${totalPack}`;
-  document.getElementById("packBar").style.width = totalPack ? (donePack / totalPack * 100) + "%" : "0%";
-}
-
-function togglePack(k) {
-  packData[k] = !packData[k];
-  syncToDb();
-  renderPack();
-}
-
-function addPackItem() {
-  let inp = document.getElementById("newPack");
-  if(!inp.value.trim()) return;
-  let custom = packData["custom"] || [];
-  custom.push(inp.value.trim());
-  packData["custom"] = custom;
-  syncToDb();
-  inp.value = "";
-  renderPack();
-}
-
-function filterPlaces(tag, btn) {
-  selectedTag = tag;
-  document.querySelectorAll("#tagFilters button").forEach(b => b.classList.remove("active"));
-  if(btn) btn.classList.add("active");
-  renderPlaces();
-}
-
-function renderPlaces() {
-  let filtered = selectedTag === 'ALL' ? places : places.filter(p => p.tag === selectedTag);
-  document.getElementById("placesList").innerHTML = filtered.map(p => `
-    <div class="box">
-      <div class="top">
-        <div>
-          <h2>${p.name}</h2>
-          <span class="tag">${p.tag}</span>
-        </div>
-      </div>
-      <div class="desc">${p.desc}</div>
-      <a class="map" target="_blank" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name)}">🗺️ 開啟 Google Maps 導航</a>
-    </div>
-  `).join("");
-}
-
-function renderMoney() {
-  document.getElementById("expenses").innerHTML = exps.map((e, i) => `
-    <div class="exp">
-      <input value="${String(e.n||'').replace(/"/g, '&quot;')}" onchange="exps[${i}].n=this.value;saveMoney()">
-      <input type="number" value="${e.a||0}" onchange="exps[${i}].a=+this.value;saveMoney()">
-      <select onchange="exps[${i}].p=this.value;saveMoney()">
-        <option value="share" ${e.p==='share'?'selected':''}>平分</option>
-        <option value="A" ${e.p==='A'?'selected':''}>A 先付</option>
-        <option value="B" ${e.p==='B'?'selected':''}>B 先付</option>
-      </select>
-      <button class="check" onclick="exps.splice(${i},1);saveMoney()">刪</button>
-    </div>
-  `).join("");
-  
-  let total = 0, paidA = 0, paidB = 0;
-  exps.forEach(e => {
-    let amt = +e.a || 0;
-    total += amt;
-    if(e.p === 'A') paidA += amt;
-    if(e.p === 'B') paidB += amt;
-    if(e.p === 'share') { paidA += amt/2; paidB += amt/2; }
-  });
-  
-  document.getElementById("total").textContent = "NT$" + total.toLocaleString();
-  document.getElementById("per").textContent = "NT$" + Math.round(total / 2).toLocaleString();
-  
-  let settleText = "";
-  let diff = paidA - (total / 2);
-  if (Math.abs(diff) < 1) {
-    settleText = "🎉 目前雙方費用已完美平分！";
-  } else if (diff > 0) {
-    settleText = `💡 結算：B 需支付給 A <span style="font-size:16px;color:var(--red)">NT$ ${Math.round(diff).toLocaleString()}</span>`;
-  } else {
-    settleText = `💡 結算：A 需支付給 B <span style="font-size:16px;color:var(--red)">NT$ ${Math.round(-diff).toLocaleString()}</span>`;
-  }
-  document.getElementById("settleBox").innerHTML = settleText;
-}
-
-function addExp() { exps.push({ n: "新項目", a: 0, p: "share" }); saveMoney(); }
-function saveMoney() { syncToDb(); renderMoney(); }
-
-function countdown() {
-  let target = new Date("2026-12-25T09:53:00+08:00") - new Date();
-  let el = document.getElementById("count");
-  if (target <= 0) { el.textContent = "旅程開始了 ❤️"; return; }
-  let D = Math.floor(target / 86400000);
-  let H = Math.floor((target % 86400000) / 3600000);
-  let M = Math.floor((target % 3600000) / 60000);
-  el.textContent = `${D}天 ${H}小時 ${M}分鐘`;
-}
-
-setInterval(countdown, 30000);
-countdown();
-fetchWeather();
-updateNextSpotCard();
-renderTimeline(1);
-renderPack();
-renderPlaces();
-renderMoney();
-progress();
-</script>
-</body>
-</html>
+function tab(id,b){document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");if(id==="plan")renderTimeline(curDay);if(id==="pack")renderPack();if(id==="places")renderPlaces();if(id==="money")renderMoney()}
+function updateNextSpotCard(){let now=new Date(),i=manualNextIndex>=0?manualNextIndex:Math.max(0,fullSchedule.findIndex(s=>new Date(s.datetime)>now));let s=displayScheduleItem(i);document.getElementById("nextTime").textContent="Day "+s.day+" · "+s.time;document.getElementById("nextTitle").textContent=s.title;document.getElementById("nextDesc").textContent=s.desc;document.getElementById("nextMapBtn").href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(s.spot||s.title);document.getElementById("nextIndexText").textContent=manualNextIndex<0?"自動判斷":(i+1)+"/"+fullSchedule.length}
+function prevNextSpot(){manualNextIndex=manualNextIndex<0?0:(manualNextIndex-1+fullSchedule.length)%fullSchedule.length;updateNextSpotCard()}
+function nextNextSpot(){manualNextIndex=manualNextIndex<0?0:(manualNextIndex+1)%fullSchedule.length;updateNextSpotCard()}
+function day(d,b){curDay=d;document.querySelectorAll(".days button").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");renderTimeline(d)}
+function isCurrent(i){let n=new Date(),t=new Date(fullSchedule[i].datetime),nt=fullSchedule[i+1]?new Date(fullSchedule[i+1].datetime):null;return t<=n&&(!nt||n<nt)}
+function travel(a,b,g){let m={"0-1":"火車約 49 分鐘","1-2":"取車／步行約 20–30 分鐘","2-3":"車程約 15 分鐘","3-4":"車程約 10–15 分鐘","4-5":"車程約 10 分鐘","5-6":"入住／進房約 30 分鐘","6-7":"前往餐廳約 5–10 分鐘","7-8":"步行約 5–10 分鐘","8-9":"回飯店約 5–10 分鐘","10-11":"退房整理約 30 分鐘","11-12":"車程約 20–30 分鐘","12-13":"車程約 15 分鐘","13-14":"車程約 15 分鐘","14-15":"車程約 10 分鐘","15-16":"回礁溪約 30 分鐘","16-17":"車程約 5–10 分鐘","17-18":"前往車站約 5 分鐘","18-19":"車站內步行／候車約 1 小時 59 分"};return m[a+"-"+b]||(g<60?"預留約 "+g+" 分鐘":"預留約 "+Math.floor(g/60)+" 小時 "+g%60+" 分鐘")}
+function renderTimeline(d){let ids=fullSchedule.map((s,i)=>i).filter(i=>fullSchedule[i].day===d),html="";ids.forEach((k,p)=>{let x=displayScheduleItem(k);html+='<div class="row"><div class="time">'+x.time+'</div><div class="line"><div class="dot"></div></div><div class="itemcard '+(done[k]?"done":"")+'" style="'+(isCurrent(k)?"border-color:var(--gold);box-shadow:0 0 0 2px #c89a4530":"")+'"><div class="top"><h3>'+x.title+'</h3><button class="check" onclick="toggle('+k+')">'+(done[k]?"✓ 已完成":isCurrent(k)?"▶ 進行中":"○ 打勾")+'</button></div><div class="muted">'+x.desc+'</div><span class="tag">'+x.tag+'</span></div></div>';if(p<ids.length-1){let n=ids[p+1],mins=Math.max(0,Math.round((new Date(fullSchedule[n].datetime)-new Date(fullSchedule[k].datetime))/60000));html+='<div class="row" style="min-height:30px"><div></div><div></div><div class="travel-gap"><span>🚗 '+travel(k,n,mins)+'</span></div></div>'}});document.getElementById("timeline").innerHTML=html;progress();updateTodayStatus()}
+function toggle(k){done[k]=!done[k];syncToDb();renderTimeline(curDay)}
+function progress(){let n=fullSchedule.length,d=Object.values(done).filter(Boolean).length;document.getElementById("ptext").textContent=d+" / "+n;document.getElementById("bar").style.width=(d/n*100)+"%"}
+function renderPack(){let h="",t=0,d=0;defaultPack.forEach((g,gi)=>{h+='<div class="box"><h2>'+g.cat+'</h2>';g.items.forEach((it,ii)=>{t++;let k="def-"+gi+"-"+ii,c=!!packData[k];if(c)d++;h+='<div class="pack-item '+(c?"done":"")+'"><span>'+it+'</span><button class="check" onclick="togglePack(\''+k+'\')">'+(c?"✓ 已準備":"○ 準備")+"</button></div>"});h+="</div>"});let custom=packData.custom||[];if(custom.length){h+='<div class="box"><h2>⭐ 自訂項目</h2>';custom.forEach((it,i)=>{t++;let k="cust-"+i,c=!!packData[k];if(c)d++;h+='<div class="pack-item '+(c?"done":"")+'"><span>'+it+'</span><button class="check" onclick="togglePack(\''+k+'\')">'+(c?"✓":"○")+"</button></div>"});h+="</div>"}document.getElementById("packList").innerHTML=h;document.getElementById("packPtext").textContent=d+" / "+t;document.getElementById("packBar").style.width=t?d/t*100+"%":"0%"}
+function togglePack(k){packData[k]=!packData[k];syncToDb();renderPack()}function addPackItem(){let i=document.getElementById("newPack");if(!i.value.trim())return;let c=packData.custom||[];c.push(i.value.trim());packData.custom=c;syncToDb();i.value="";renderPack()}
+function filterPlaces(t,b){selectedTag=t;document.querySelectorAll("#tagFilters button").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");renderPlaces()}
+function renderPlaces(){let a=selectedTag==="ALL"?places:places.filter(p=>p.tag===selectedTag);document.getElementById("placesList").innerHTML=a.map(p=>'<div class="box"><h2>'+p.name+'</h2><span class="tag">'+p.tag+'</span><div class="desc">'+p.desc+'</div><a class="map" target="_blank" href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.name)+'">🗺️ 開啟 Google Maps 導航</a></div>').join("")}
+function renderMoney(){document.getElementById("expenses").innerHTML=exps.map((e,i)=>'<div class="exp"><input value="'+String(e.n||"").replace(/"/g,"&quot;")+'" onchange="exps['+i+'].n=this.value;saveMoney()"><input type="number" value="'+(e.a||0)+'" onchange="exps['+i+'].a=+this.value;saveMoney()"><select onchange="exps['+i+'].p=this.value;saveMoney()"><option value="share" '+(e.p==="share"?"selected":"")+'>平分</option><option value="A" '+(e.p==="A"?"selected":"")+'>A 先付</option><option value="B" '+(e.p==="B"?"selected":"")+'>B 先付</option></select><button class="check" onclick="exps.splice('+i+',1);saveMoney()">刪</button></div>').join("");let total=0,a=0,b=0;exps.forEach(e=>{let x=+e.a||0;total+=x;if(e.p==="A")a+=x;if(e.p==="B")b+=x;if(e.p==="share"){a+=x/2;b+=x/2}});document.getElementById("total").textContent="NT$"+total.toLocaleString();document.getElementById("per").textContent="NT$"+Math.round(total/2).toLocaleString();let diff=a-total/2;document.getElementById("settleBox").innerHTML=Math.abs(diff)<1?"🎉 目前雙方費用已完美平分！":diff>0?"💡 結算：B 需支付給 A <span style='font-size:16px;color:var(--red)'>NT$ "+Math.round(diff).toLocaleString()+"</span>":"💡 結算：A 需支付給 B <span style='font-size:16px;color:var(--red)'>NT$ "+Math.round(-diff).toLocaleString()+"</span>"}
+function addExp(){exps.push({n:"新項目",a:0,p:"share"});saveMoney()}function saveMoney(){syncToDb();renderMoney()}
+function countdown(){let x=new Date("2026-12-25T09:53:00+08:00")-new Date(),e=document.getElementById("count");if(x<=0){e.textContent="旅程開始了 ❤️";return}let d=Math.floor(x/86400000),h=Math.floor(x%86400000/3600000),m=Math.floor(x%3600000/60000);e.textContent=d+"天 "+h+"小時 "+m+"分鐘"}
+async function fetchWeather(){try{let r=await fetch("https://api.open-meteo.com/v1/forecast?latitude=24.8258&longitude=121.7709&current=temperature_2m,weather_code&hourly=precipitation_probability&forecast_days=1&timezone=Asia%2FTaipei"),d=await r.json(),t=Math.round(d.current.temperature_2m),c=d.current.weather_code,p=d.hourly.precipitation_probability[new Date().getHours()]||0;document.getElementById("wTemp").textContent=t+"°C";document.getElementById("wRain").textContent="🌧️ 降雨率 "+p+"%";let i="🌤️",desc="多雲時晴";if(c===0){i="☀️";desc="晴朗舒適"}else if(c>=51){i="🌧️";desc="有短暫陣雨"}document.getElementById("wIcon").textContent=i;document.getElementById("wDesc").textContent=desc;if(p>=40)document.getElementById("rainNotice").style.display="block"}catch(e){document.getElementById("wDesc").textContent="天氣獲取失敗"}}
+setInterval(countdown,30000);setInterval(()=>{updateTodayStatus();updateNextSpotCard()},60000);countdown();fetchWeather();updateNextSpotCard();updateTodayStatus();renderTimeline(1);renderPack();renderPlaces();renderMoney();progress();
+</script></body></html>
