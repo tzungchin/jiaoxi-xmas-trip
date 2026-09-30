@@ -19,20 +19,18 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-// 動態生成高相容性 PNG 桌面 Icon (了解 iOS/Android 對 DataURL 圖示的限制)
+// 動態生成高相容性 PNG 桌面 Icon
 (function generateDynamicPWAIcon() {
   const canvas = document.createElement('canvas');
   canvas.width = 192;
   canvas.height = 192;
   const ctx = canvas.getContext('2d');
 
-  // 背景圓角矩形 (紅酒色)
   ctx.fillStyle = '#7b2633';
   ctx.beginPath();
   ctx.roundRect(0, 0, 192, 192, 40);
   ctx.fill();
 
-  // 繪製聖誕樹 Emoji
   ctx.font = '120px sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -99,6 +97,12 @@ h3{margin:0;font-size:16px}
 .days{display:flex;gap:8px;margin-bottom:13px}
 .days button{padding:10px 14px;border:1px solid var(--line);background:#fff;border-radius:14px;font-weight:750;cursor:pointer}
 .days button.sel{background:var(--red);color:#fff}
+
+/* Tag 篩選按鈕樣式 */
+.tag-filters{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-top:10px}
+.tag-filters button{padding:6px 12px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;cursor:pointer}
+.tag-filters button.active{background:var(--red);color:#fff;border-color:var(--red)}
+
 .row{display:grid;grid-template-columns:57px 14px 1fr;gap:8px}
 .time{font-size:12px;font-weight:800;color:var(--red);text-align:right;padding-top:16px}
 .line{position:relative}
@@ -110,6 +114,7 @@ h3{margin:0;font-size:16px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .check{border:1px solid var(--line);background:#fff;border-radius:10px;padding:5px 10px;cursor:pointer;font-size:12px;font-weight:700}
 .tag{display:inline-block;margin-top:7px;padding:3px 8px;border-radius:8px;background:#f5e8dd;color:#795544;font-size:11px;font-weight:600}
+.map{display:inline-block;margin-top:10px;padding:8px 12px;background:var(--gold-light);border:1px solid var(--gold);color:var(--ink);border-radius:10px;font-size:12px;font-weight:700;text-decoration:none}
 
 .exp{display:grid;grid-template-columns:1fr 75px 75px 40px;gap:5px;margin-top:8px;align-items:center}
 .exp input,.exp select{min-width:0;padding:8px;border:1px solid var(--line);border-radius:10px;font-size:12px}
@@ -130,7 +135,7 @@ h3{margin:0;font-size:16px}
       <span id="syncBadge" class="sync-status sync-offline">離線模式</span>
     </div>
     <div class="hero-title">🎄 礁溪聖誕小旅行</div>
-    <div class="hero-sub">兩天一夜 · 七堵 ⇄ 礁溪<br>溫泉輕擁 × 聖誕暖宴 × 山海靜美</div>
+    <div class="hero-sub">兩天一夜 · 七堵 ⇄ 礁溪<br>溫泉浸泡 × 聖誕大餐 × 外澳海景</div>
     <div class="hero-pills">
       <div class="pill">📅 12/25 (五) — 12/26 (六)</div>
       <div class="pill">❤️ 雙人即時同步中</div>
@@ -147,7 +152,7 @@ h3{margin:0;font-size:16px}
 
   <main>
     <section id="home" class="panel active">
-      <!-- 🌦️️ 動態天氣卡片 -->
+      <!-- 🌦 動態天氣卡片 -->
       <div class="box weather-card">
         <div class="weather-main">
           <div class="weather-icon" id="wIcon">🌤️</div>
@@ -182,7 +187,7 @@ h3{margin:0;font-size:16px}
       </div>
 
       <div class="box">
-        <h2>❤️️ 距離出發時間</h2>
+        <h2>❤ 距離出發時間</h2>
         <div id="count" class="count">計算中…</div>
         <div class="muted">2026/12/25 09:53 · 七堵車站開車</div>
       </div>
@@ -221,8 +226,15 @@ h3{margin:0;font-size:16px}
 
     <section id="places" class="panel">
       <div class="box">
-        <h2>📍 景點與地點導航</h2>
-        <div class="muted">點擊開啟 Google Maps 直接導航。</div>
+        <h2>📍 景點與美食導航</h2>
+        <div class="muted">點擊 Tag 可快速分類篩選景點或美食。</div>
+        <div class="tag-filters" id="tagFilters">
+          <button class="active" onclick="filterPlaces('ALL', this)">全部</button>
+          <button onclick="filterPlaces('景點', this)">景點</button>
+          <button onclick="filterPlaces('美食', this)">美食</button>
+          <button onclick="filterPlaces('住宿', this)">住宿</button>
+          <button onclick="filterPlaces('夜遊', this)">夜遊</button>
+        </div>
       </div>
       <div id="placesList"></div>
     </section>
@@ -286,18 +298,18 @@ try {
 const fullSchedule = [
   { day:1, time:"09:53", datetime:"2026-12-25T09:53:00", title:"🚆 七堵出發", desc:"278 次自強3000｜開啟聖誕小旅行", tag:"交通", spot:"七堵車站" },
   { day:1, time:"10:42", datetime:"2026-12-25T10:42:00", title:"📍 抵達礁溪", desc:"抵達礁溪車站，準備取車或寄放行李", tag:"交通", spot:"礁溪火車站" },
-  { day:1, time:"11:20", datetime:"2026-12-25T11:20:00", title:"🍜 礁溪午餐", desc:"品嚐在地特色美食（八寶冬粉 / 蔥油餅）", tag:"美食", spot:"礁溪八寶冬粉" },
+  { day:1, time:"11:20", datetime:"2026-12-25T11:20:00", title:"🍜 礁溪午餐：玉仁八寶冬粉", desc:"品嚐百大名店八寶冬粉與特色小菜", tag:"美食", spot:"玉仁八寶冬粉" },
   { day:1, time:"13:00", datetime:"2026-12-25T13:00:00", title:"🌿 林美石磐 / 五峰旗", desc:"漫步低難度溪谷步道，吸收負離子", tag:"景點", spot:"林美石磐步道" },
   { day:1, time:"15:00", datetime:"2026-12-25T15:00:00", title:"☕ 情侶咖啡約會", desc:"選間質感咖啡廳，聊天休息拍照", tag:"約會", spot:"礁溪咖啡廳" },
   { day:1, time:"16:00", datetime:"2026-12-25T16:00:00", title:"🏨 入住東旅湯宿京閣苑", desc:"Check-in 辦理入住，感受濃濃日式風情", tag:"住宿", spot:"東旅湯宿京閣苑" },
-  { day:1, time:"16:30", datetime:"2026-12-25T16:30:00", title:"♨️️ 房內泡湯＆休息", desc:"享受客房獨立湯屋，舒緩身心", tag:"放鬆", spot:"東旅湯宿京閣苑" },
+  { day:1, time:"16:30", datetime:"2026-12-25T16:30:00", title:"♨️ 房內泡湯＆休息", desc:"享受客房獨立湯屋，舒緩身心", tag:"放鬆", spot:"東旅湯宿京閣苑" },
   { day:1, time:"18:00", datetime:"2026-12-25T18:00:00", title:"🎄 聖誕晚餐：三燔礁溪", desc:"享用高質感壽喜燒/涮涮鍋放題與哈根達斯", tag:"美食", spot:"三燔礁溪" },
   { day:1, time:"20:00", datetime:"2026-12-25T20:00:00", title:"🌙 礁溪夜間散步", desc:"湯圍溝溫泉公園散步、欣賞聖誕燈飾", tag:"約會", spot:"湯圍溝溫泉公園" },
-  { day:1, time:"21:00", datetime:"2026-12-25T21:00:00", title:"❤️️ 回飯店泡湯", desc:"第二次泡湯放鬆 ＋ 交換聖誕小禮物", tag:"兩人時間", spot:"東旅湯宿京閣苑" },
+  { day:1, time:"21:00", datetime:"2026-12-25T21:00:00", title:"❤️ 回飯店泡湯", desc:"第二次泡湯放鬆 ＋ 交換聖誕小禮物", tag:"兩人時間", spot:"東旅湯宿京閣苑" },
   { day:2, time:"08:30", datetime:"2026-12-26T08:30:00", title:"☀️ 飯店早餐", desc:"享用精緻早餐，享受悠閒晨光", tag:"住宿", spot:"東旅湯宿京閣苑" },
   { day:2, time:"10:00", datetime:"2026-12-26T10:00:00", title:"🏨 Check-out", desc:"辦理退房，整理行李準備出發", tag:"住宿", spot:"東旅湯宿京閣苑" },
   { day:2, time:"10:30", datetime:"2026-12-26T10:30:00", title:"🏛 蘭陽博物館", desc:"欣賞單面山建築美學與宜蘭文化展覽", tag:"景點", spot:"蘭陽博物館" },
-  { day:2, time:"12:00", datetime:"2026-12-26T12:00:00", title:"🍜 頭城午餐", desc:"品嚐頭城在地海鮮或老街小吃", tag:"美食", spot:"頭城老街" },
+  { day:2, time:"12:00", datetime:"2026-12-26T12:00:00", title:"🍜 頭城午餐：老街美食", desc:"品嚐品誼古早味小吃或阿茂麵攤", tag:"美食", spot:"頭城老街" },
   { day:2, time:"13:30", datetime:"2026-12-26T13:30:00", title:"🌊 外澳看海", desc:"外澳沙灘散步、遠眺龜山島海景", tag:"景點", spot:"外澳沙灘" },
   { day:2, time:"15:00", datetime:"2026-12-26T15:00:00", title:"☕ 海景咖啡", desc:"坐在海景第一排咖啡廳享受最後時光", tag:"約會", spot:"外澳海景咖啡" },
   { day:2, time:"16:00", datetime:"2026-12-26T16:00:00", title:"🚗 回礁溪", desc:"慢慢開車/搭車返回礁溪市區", tag:"交通", spot:"礁溪車站" },
@@ -314,16 +326,19 @@ const defaultPack = [
 ];
 
 const places = [
+  { name: "玉仁八寶冬粉", tag: "美食", desc: "Day 1 午餐推薦：台灣百大名店，配料豐富湯頭鮮甜，小菜種類極多。" },
+  { name: "品誼古早味小吃", tag: "美食", desc: "Day 2 午餐推薦：頭城老街傳承三代，必吃古早味米粉羹、炸春捲與蘿蔔糕。" },
+  { name: "阿茂麵攤", tag: "美食", desc: "Day 2 午餐備案：50 年在地老店，主打麻醬麵與古早味黑白切。" },
   { name: "東旅湯宿京閣苑", tag: "住宿", desc: "濃濃日式風情溫泉飯店，全館提供客房獨立泡湯池，並備有免費下午茶與自助早餐。" },
-  { name: "三燔礁溪", tag: "聖誕晚餐", desc: "晶泉豐旅旗下精緻餐廳，主打高質感壽喜燒與涮涮鍋放題，還有豐富沙拉吧與哈根達斯冰淇淋。" },
-  { name: "林美石磐步道", tag: "景點", desc: "譽為宜蘭小太魯閣，沿途有清澈溪流與瀑布，全程平緩好走，非常適合情侶手牽手散步。" },
-  { name: "五峰旗瀑布", tag: "景點", desc: "礁溪知名地標，共有三層瀑布，山林幽靜且充滿滿滿負離子與芬多精。" },
+  { name: "三燔礁溪", tag: "美食", desc: "聖誕大餐：晶泉豐旅旗下精緻餐廳，主打高質感壽喜燒放題與哈根達斯。" },
+  { name: "林美石磐步道", tag: "景點", desc: "譽為宜蘭小太魯閣，沿途有清澈溪流與瀑布，全程平緩好走，非常適合情侶散步。" },
+  { name: "五峰旗瀑布", tag: "景點", desc: "礁溪知名地標，共有三層瀑布，山林幽靜且充滿負離子與芬多精。" },
   { name: "蘭陽博物館", tag: "景點", desc: "融入單面山地景的幾何建築，展覽豐富且好拍照，也是雨天備案的首選。" },
-  { name: "外澳海灘", tag: "景點", desc: "擁有平坦的黑沙灘，能直接遠眺龜山島雄姿，聽海浪聲散步超級浪漫。" },
-  { name: "湯圍溝溫泉公園", tag: "夜遊", desc: "市區核心的溫泉公園，設有免費足湯，夜晚點燈後極具氛圍，周邊小吃林立。" }
+  { name: "外澳海灘", tag: "景點", desc: "擁有平坦黑沙灘，能直接遠眺龜山島雄姿，聽海浪聲散步超級浪漫。" },
+  { name: "湯圍溝溫泉公園", tag: "夜遊", desc: "市區核心溫泉公園，設有免費足湯，夜晚點燈後極具氛圍，周邊小吃林立。" }
 ];
 
-let done = {}, exps = [], packData = {}, curDay = 1, manualNextIndex = -1;
+let done = {}, exps = [], packData = {}, curDay = 1, manualNextIndex = -1, selectedTag = 'ALL';
 
 if (db) {
   db.ref("tripData").on("value", (snapshot) => {
@@ -343,7 +358,6 @@ function syncToDb() {
   }
 }
 
-// 🌦️ Fetch 礁溪即時天氣數據 (Open-Meteo API)
 async function fetchWeather() {
   try {
     let res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=24.8258&longitude=121.7709&current=temperature_2m,relative_humidity_2m,precipitation,weather_code&hourly=precipitation_probability&forecast_days=1&timezone=Asia%2FTaipei");
@@ -506,8 +520,16 @@ function addPackItem() {
   renderPack();
 }
 
+function filterPlaces(tag, btn) {
+  selectedTag = tag;
+  document.querySelectorAll("#tagFilters button").forEach(b => b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+  renderPlaces();
+}
+
 function renderPlaces() {
-  document.getElementById("placesList").innerHTML = places.map(p => `
+  let filtered = selectedTag === 'ALL' ? places : places.filter(p => p.tag === selectedTag);
+  document.getElementById("placesList").innerHTML = filtered.map(p => `
     <div class="box">
       <div class="top">
         <div>
