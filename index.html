@@ -6,16 +6,45 @@
 <meta name="theme-color" content="#7b2633">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="礁溪聖誕小旅行">
+<meta name="apple-mobile-web-app-title" content="礁溪聖誕">
 <title>礁溪聖誕小旅行</title>
 
-<!-- PWA Manifest 嵌入設定 -->
-<link rel="manifest" href='data:application/manifest+json,{"name":"礁溪聖誕小旅行","short_name":"礁溪聖誕","start_url":".","display":"standalone","background_color":"#fff7ef","theme_color":"#7b2633","icons":[{"src":"https://fav.farm/🎄","sizes":"192x192","type":"image/png"}]}'>
-<link rel="apple-touch-icon" href="https://fav.farm/🎄">
+<!-- PWA Manifest 設定 -->
+<link id="dynamicFavicon" rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎄</text></svg>">
+<link id="dynamicAppleIcon" rel="apple-touch-icon" href="">
+<link rel="manifest" href='data:application/manifest+json,{"name":"礁溪聖誕小旅行","short_name":"礁溪聖誕","start_url":".","display":"standalone","background_color":"#fff7ef","theme_color":"#7b2633","icons":[{"src":"data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎄</text></svg>","sizes":"192x192 512x512","type":"image/svg+xml"}]}'>
 
 <!-- 載入 Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+// 動態生成高相容性 PNG 桌面 Icon (了解 iOS/Android 對 DataURL 圖示的限制)
+(function generateDynamicPWAIcon() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 192;
+  canvas.height = 192;
+  const ctx = canvas.getContext('2d');
+
+  // 背景圓角矩形 (紅酒色)
+  ctx.fillStyle = '#7b2633';
+  ctx.beginPath();
+  ctx.roundRect(0, 0, 192, 192, 40);
+  ctx.fill();
+
+  // 繪製聖誕樹 Emoji
+  ctx.font = '120px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🎄', 96, 104);
+
+  const pngUrl = canvas.toDataURL('image/png');
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById('dynamicAppleIcon').href = pngUrl;
+  });
+})();
+</script>
+
 <style>
 :root{--red:#7b2633;--red2:#a44752;--cream:#fff8f1;--card:#fff;--gold:#c89a45;--gold-light:#fbf4e6;--ink:#302928;--muted:#776d69;--line:#eadfd8}
 *{box-sizing:border-box}
@@ -108,7 +137,6 @@ h3{margin:0;font-size:16px}
     </div>
   </header>
   
-  <!-- 調整順序為：首頁、行程、景點、分帳、行李 -->
   <nav>
     <button class="active" onclick="tab('home',this)">首頁</button>
     <button onclick="tab('plan',this)">行程</button>
@@ -119,7 +147,7 @@ h3{margin:0;font-size:16px}
 
   <main>
     <section id="home" class="panel active">
-      <!-- 🌦️ 動態天氣卡片 -->
+      <!-- 🌦️️ 動態天氣卡片 -->
       <div class="box weather-card">
         <div class="weather-main">
           <div class="weather-icon" id="wIcon">🌤️</div>
@@ -154,7 +182,7 @@ h3{margin:0;font-size:16px}
       </div>
 
       <div class="box">
-        <h2>❤️ 距離出發時間</h2>
+        <h2>❤️️ 距離出發時間</h2>
         <div id="count" class="count">計算中…</div>
         <div class="muted">2026/12/25 09:53 · 七堵車站開車</div>
       </div>
@@ -262,10 +290,10 @@ const fullSchedule = [
   { day:1, time:"13:00", datetime:"2026-12-25T13:00:00", title:"🌿 林美石磐 / 五峰旗", desc:"漫步低難度溪谷步道，吸收負離子", tag:"景點", spot:"林美石磐步道" },
   { day:1, time:"15:00", datetime:"2026-12-25T15:00:00", title:"☕ 情侶咖啡約會", desc:"選間質感咖啡廳，聊天休息拍照", tag:"約會", spot:"礁溪咖啡廳" },
   { day:1, time:"16:00", datetime:"2026-12-25T16:00:00", title:"🏨 入住東旅湯宿京閣苑", desc:"Check-in 辦理入住，感受濃濃日式風情", tag:"住宿", spot:"東旅湯宿京閣苑" },
-  { day:1, time:"16:30", datetime:"2026-12-25T16:30:00", title:"♨️ 房內泡湯＆休息", desc:"享受客房獨立湯屋，舒緩身心", tag:"放鬆", spot:"東旅湯宿京閣苑" },
+  { day:1, time:"16:30", datetime:"2026-12-25T16:30:00", title:"♨️️ 房內泡湯＆休息", desc:"享受客房獨立湯屋，舒緩身心", tag:"放鬆", spot:"東旅湯宿京閣苑" },
   { day:1, time:"18:00", datetime:"2026-12-25T18:00:00", title:"🎄 聖誕晚餐：三燔礁溪", desc:"享用高質感壽喜燒/涮涮鍋放題與哈根達斯", tag:"美食", spot:"三燔礁溪" },
   { day:1, time:"20:00", datetime:"2026-12-25T20:00:00", title:"🌙 礁溪夜間散步", desc:"湯圍溝溫泉公園散步、欣賞聖誕燈飾", tag:"約會", spot:"湯圍溝溫泉公園" },
-  { day:1, time:"21:00", datetime:"2026-12-25T21:00:00", title:"❤️ 回飯店泡湯", desc:"第二次泡湯放鬆 ＋ 交換聖誕小禮物", tag:"兩人時間", spot:"東旅湯宿京閣苑" },
+  { day:1, time:"21:00", datetime:"2026-12-25T21:00:00", title:"❤️️ 回飯店泡湯", desc:"第二次泡湯放鬆 ＋ 交換聖誕小禮物", tag:"兩人時間", spot:"東旅湯宿京閣苑" },
   { day:2, time:"08:30", datetime:"2026-12-26T08:30:00", title:"☀️ 飯店早餐", desc:"享用精緻早餐，享受悠閒晨光", tag:"住宿", spot:"東旅湯宿京閣苑" },
   { day:2, time:"10:00", datetime:"2026-12-26T10:00:00", title:"🏨 Check-out", desc:"辦理退房，整理行李準備出發", tag:"住宿", spot:"東旅湯宿京閣苑" },
   { day:2, time:"10:30", datetime:"2026-12-26T10:30:00", title:"🏛 蘭陽博物館", desc:"欣賞單面山建築美學與宜蘭文化展覽", tag:"景點", spot:"蘭陽博物館" },
