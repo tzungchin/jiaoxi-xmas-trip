@@ -142,7 +142,6 @@ h3{margin:0;font-size:16px}
     </div>
   </header>
   
-  <!-- 選單按鈕順序：首頁、行程、景點、分帳、行李 -->
   <nav>
     <button class="active" onclick="tab('home',this)">首頁</button>
     <button onclick="tab('plan',this)">行程</button>
@@ -233,6 +232,7 @@ h3{margin:0;font-size:16px}
           <button class="active" onclick="filterPlaces('ALL', this)">全部</button>
           <button onclick="filterPlaces('景點', this)">景點</button>
           <button onclick="filterPlaces('美食', this)">美食</button>
+          <button onclick="filterPlaces('購物', this)">購物</button>
           <button onclick="filterPlaces('住宿', this)">住宿</button>
           <button onclick="filterPlaces('夜遊', this)">夜遊</button>
         </div>
@@ -330,6 +330,8 @@ const places = [
   { name: "玉仁八寶冬粉", tag: "美食", desc: "Day 1 午餐推薦：台灣百大名店，配料豐富湯頭鮮甜，小菜種類極多。" },
   { name: "品誼古早味小吃", tag: "美食", desc: "Day 2 午餐推薦：頭城老街傳承三代，必吃古早味米粉羹、炸春捲與蘿蔔糕。" },
   { name: "阿茂麵攤", tag: "美食", desc: "Day 2 午餐備案：50 年在地老店，主打麻醬麵與古早味黑白切。" },
+  { name: "陳旺記鴨片飯", tag: "美食", desc: "口袋名單：礁溪平價超人氣排隊美食，招牌鴨片飯肉質嫩多汁、當歸羊肉湯濃郁。" },
+  { name: "山友拉麵", tag: "美食", desc: "口袋名單：礁溪熱門日式拉麵店，濃郁豚骨湯頭與滿滿三星蔥韭香。" },
   { name: "珈琲方島", tag: "美食", desc: "口袋名單：礁溪極具質感的獨立咖啡店，適合下午悠閒約會。" },
   { name: "襄聚牛排", tag: "美食", desc: "口袋名單：在地平價高CP值台式排餐，肉質軟嫩多汁。" },
   { name: "正常鮮肉小籠湯包", tag: "美食", desc: "口袋名單：礁溪熱門爆汁湯包，三星蔥香滿溢。" },
@@ -337,8 +339,14 @@ const places = [
   { name: "合鴨米灶腳", tag: "美食", desc: "口袋名單：無農藥鴨米飯與特色鴨肉料理，溫馨有古早味。" },
   { name: "吉祥鮮肉小籠包", tag: "美食", desc: "口袋名單：頭城人氣湯包，500碗認證名店。" },
   { name: "阿宗芋冰城 / 聯發芋冰老店", tag: "美食", desc: "口袋名單：傳統叭噗冰，頭城看海必吃古早味甜點。" },
-  { name: "東旅湯宿京閣苑", tag: "住宿", desc: "濃濃日式風情溫泉飯店，全館提供客房獨立泡湯池，並備有免費下午茶與自助早餐。" },
   { name: "三燔礁溪", tag: "美食", desc: "聖誕大餐：晶泉豐旅旗下精緻餐廳，主打高質感壽喜燒放題與哈根達斯。" },
+  { name: "滿山望海", tag: "美食", desc: "口袋名單：頭城海景第一排夢幻景觀咖啡廳，遠眺龜山島無敵海景。" },
+  { name: "空ㄟ農場", tag: "夜遊", desc: "口袋名單：礁溪極致百萬夜景景觀餐廳，窯烤披薩美味、氣氛滿分。" },
+  { name: "奕順軒 (礁溪店)", tag: "購物", desc: "口袋名單：宜蘭必買伴手禮名店，招牌奶凍捲、鹹蔥麵包與切片蛋糕。" },
+  { name: "慕嶼商行", tag: "購物", desc: "口袋名單：宜蘭質感文創選物店，販售手作藝品、特色紀念品。" },
+  { name: "東旅湯宿京閣苑", tag: "住宿", desc: "濃濃日式風情溫泉飯店，全館提供客房獨立泡湯池，並備有免費下午茶與自助早餐。" },
+  { name: "跑馬古道公園", tag: "景點", desc: "口袋名單：前身為陸軍明德營區，園區寬廣綠意盎然，夜晚有常態性光影燈光秀。" },
+  { name: "甲鳥園", tag: "景點", desc: "口袋名單：由傳統鴨寮轉型的清水模生態鴨舍，可體驗餵鴨鴨與品嚐美味鴨蛋甜點。" },
   { name: "林美石磐步道", tag: "景點", desc: "譽為宜蘭小太魯閣，沿途有清澈溪流與瀑布，全程平緩好走，非常適合情侶散步。" },
   { name: "五峰旗瀑布", tag: "景點", desc: "礁溪知名地標，共有三層瀑布，山林幽靜且充滿負離子與芬多精。" },
   { name: "蘭陽博物館", tag: "景點", desc: "融入單面山地景的幾何建築，展覽豐富且好拍照，也是雨天備案的首選。" },
